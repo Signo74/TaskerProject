@@ -1,8 +1,5 @@
 package com.example.tasker;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
@@ -13,8 +10,11 @@ import android.widget.ExpandableListView.OnGroupCollapseListener;
 import android.widget.ExpandableListView.OnGroupExpandListener;
 import android.widget.Toast;
 
-public class MainActivity extends Activity {
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
+public class MainActivity extends Activity {
     ExpandableListAdapter listAdapter;
     ExpandableListView expListView;
     List<String> listDataHeader;
@@ -99,9 +99,9 @@ public class MainActivity extends Activity {
         listDataChild = new HashMap<String, List<String>>();
 
         // Adding child data
-        listDataHeader.add("Top 250");
-        listDataHeader.add("Now Showing");
-        listDataHeader.add("Coming Soon..");
+        listDataHeader.add("Today");
+        listDataHeader.add("Tommorow");
+        listDataHeader.add("Someday");
 
         // Adding child data
         List<String> top250 = new ArrayList<String>();
