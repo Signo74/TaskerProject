@@ -1,5 +1,6 @@
 package com.example.tasker;
 
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
@@ -8,13 +9,14 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.support.v7.widget.ShareActionProvider;
 
 public class ActionBarUsage extends ActionBarActivity {
     TextView mSearchText;
     int mSortMode = -1;
+    private ShareActionProvider mShareActionProvider;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,7 +29,19 @@ public class ActionBarUsage extends ActionBarActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.main_activity_actions, menu);
+
+        MenuItem shareItem = menu.findItem(R.id.action_share);
+        mShareActionProvider = (ShareActionProvider)
+                MenuItemCompat.getActionProvider(shareItem);
+        mShareActionProvider.setShareIntent(getDefaultIntent());
+
         return super.onCreateOptionsMenu(menu);
+    }
+
+    private Intent getDefaultIntent() {
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("image/*");
+        return intent;
     }
 
     @Override
@@ -71,5 +85,5 @@ public class ActionBarUsage extends ActionBarActivity {
                             "Searching for: " + query + "...", Toast.LENGTH_SHORT).show();
                     return true;
                 }
-            };
+    };
 }
