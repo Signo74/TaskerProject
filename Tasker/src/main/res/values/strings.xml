@@ -8,13 +8,62 @@
     <string name="action_discard">Delete</string>
     <string name="action_help">Help</string>
     <string name="action_share">Help</string>
-    <string-array name="planets_array">
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
+    <string name="action_websearch">Web search</string>
+    <string-array name="drawer_items">
         <item>Tasks</item>
         <item>Projects</item>
         <item>Notes</item>
     </string-array>
-    <string name="drawer_open">Open navigation drawer</string>
-    <string name="drawer_close">Close navigation drawer</string>
-    <string name="action_websearch">Web search</string>
-    <string name="app_not_available">Sorry, there\'s no web browser available</string>
+
+    <!-- Tasks -->
+    <string-array name="tasks">
+        <item>Today</item>
+        <item>Tommorow</item>
+        <item>Someday</item>
+    </string-array>
+    <string-array name="Today">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+    </string-array>
+    <string-array name="Tommorow">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+    </string-array>
+    <string-array name="Someday">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+    </string-array>
+
+    <!-- Projects -->
+    <string-array name="projects">
+        <item>Tasker</item>
+        <item>Habit</item>
+        <item>Test</item>
+    </string-array>
+    <string-array name="Tasker">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+    </string-array>
+    <string-array name="Habit">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+    </string-array>
+    <string-array name="Test">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+    </string-array>
 </resources>

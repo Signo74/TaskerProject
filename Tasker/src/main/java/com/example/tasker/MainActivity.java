@@ -1,16 +1,12 @@
 package com.example.tasker;
 
 import android.annotation.TargetApi;
-import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.NavUtils;
-import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.widget.DrawerLayout;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -33,11 +29,11 @@ import java.util.List;
 import java.util.Locale;
 
 public class MainActivity extends FragmentActivity {
-    ExpandableListAdapter listAdapter;
-    ExpandableListView expListView;
-    List<String> listDataHeader;
-    HashMap<String, List<String>> listDataChild;
-    private String[] mPlanetTitles;
+    ExpandableListAdapter mExpListAdapter;
+    ExpandableListView mExpListView;
+    List<String> mListDataHeader;
+    HashMap<String, List<String>> mListDataChild;
+    private String[] mDrawerItems;
     private ListView mDrawerList;
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
@@ -50,7 +46,7 @@ public class MainActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mPlanetTitles = getResources().getStringArray(R.array.planets_array);
+        mDrawerItems = getResources().getStringArray(R.array.drawer_items);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerList = (ListView) findViewById(R.id.left_drawer);
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,R.drawable.ic_drawer, R.string.drawer_open, R.string.drawer_close) {
@@ -66,17 +62,17 @@ public class MainActivity extends FragmentActivity {
             }
         };
 
-        mDrawerList.setAdapter(new ArrayAdapter<String>(this, R.layout.drawer_list_item, mPlanetTitles));
+        mDrawerList.setAdapter(new ArrayAdapter<String>(this, R.layout.drawer_list_item, mDrawerItems));
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
         mDrawerLayout.setDrawerListener(mDrawerToggle);
         getActionBar().setDisplayHomeAsUpEnabled(true);
         getActionBar().setHomeButtonEnabled(true);
 
-        expListView = (ExpandableListView) findViewById(R.id.lvExp);
+        mExpListView = (ExpandableListView) findViewById(R.id.lvExp);
         prepareListData();
-        listAdapter = new ExpandableListAdapter(this, listDataHeader, listDataChild);
-        expListView.setAdapter(listAdapter);
-        expListView.setOnGroupClickListener(new OnGroupClickListener() {
+        mExpListAdapter = new ExpandableListAdapter(this, mListDataHeader, mListDataChild);
+        mExpListView.setAdapter(mExpListAdapter);
+        mExpListView.setOnGroupClickListener(new OnGroupClickListener() {
 
             @Override
             public boolean onGroupClick(ExpandableListView parent, View v,
@@ -85,19 +81,19 @@ public class MainActivity extends FragmentActivity {
             }
         });
 
-        expListView.setOnGroupExpandListener(new OnGroupExpandListener() {
+        mExpListView.setOnGroupExpandListener(new OnGroupExpandListener() {
             @Override
             public void onGroupExpand(int groupPosition) {
             }
         });
 
-        expListView.setOnGroupCollapseListener(new OnGroupCollapseListener() {
+        mExpListView.setOnGroupCollapseListener(new OnGroupCollapseListener() {
             @Override
             public void onGroupCollapse(int groupPosition) {
             }
         });
 
-        expListView.setOnChildClickListener(new OnChildClickListener() {
+        mExpListView.setOnChildClickListener(new OnChildClickListener() {
 
             @Override
             public boolean onChildClick(ExpandableListView parent, View v,
@@ -121,7 +117,7 @@ public class MainActivity extends FragmentActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
+        /*switch (item.getItemId()) {
             // Respond to the action bar's Up/Home button
             case android.R.id.home:
                 Intent upIntent = NavUtils.getParentActivityIntent(this);
@@ -137,12 +133,14 @@ public class MainActivity extends FragmentActivity {
                     // This activity is part of this app's task, so simply
                     // navigate up to the logical parent activity.
                     NavUtils.navigateUpTo(this, upIntent);
+                    if (mDrawerToggle.onOptionsItemSelected(item)) {
+                        return true;
+                    }
                 }
                 return true;
-            default:
-                if (mDrawerToggle.onOptionsItemSelected(item)) {
-                    return true;
-                }
+        }*/
+        if (mDrawerToggle.onOptionsItemSelected(item)) {
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -163,6 +161,15 @@ public class MainActivity extends FragmentActivity {
 
     /** Swaps fragments in the main content view */
     private void selectItem(int position) {
+        mExpListView.setOnGroupClickListener(new OnGroupClickListener() {
+
+            @Override
+            public boolean onGroupClick(ExpandableListView parent, View v,
+                                        int groupPosition, long id) {
+                return false;
+            }
+        });
+        /*
         // Create a new fragment and specify the planet to show based on position
         Fragment fragment = new PlanetFragment();
         Bundle args = new Bundle();
@@ -176,8 +183,8 @@ public class MainActivity extends FragmentActivity {
 
         // Highlight the selected item, update the title, and close the drawer
         mDrawerList.setItemChecked(position, true);
-        setTitle(mPlanetTitles[position]);
-        mDrawerLayout.closeDrawer(mDrawerList);
+        setTitle(mDrawerItems[position]);
+        mDrawerLayout.closeDrawer(mDrawerList);*/
     }
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
@@ -188,13 +195,13 @@ public class MainActivity extends FragmentActivity {
     }
 
     private void prepareListData() {
-        listDataHeader = new ArrayList<String>();
-        listDataChild = new HashMap<String, List<String>>();
+        mListDataHeader = new ArrayList<String>();
+        mListDataChild = new HashMap<String, List<String>>();
 
         //Header titles data
-        listDataHeader.add("Today");
-        listDataHeader.add("Tommorow");
-        listDataHeader.add("Someday");
+        mListDataHeader.add("Today");
+        mListDataHeader.add("Tommorow");
+        mListDataHeader.add("Someday");
 
         //Child title data
         List<String> top250 = new ArrayList<String>();
@@ -221,9 +228,9 @@ public class MainActivity extends FragmentActivity {
         comingSoon.add("The Canyons");
         comingSoon.add("Europa Report");
 
-        listDataChild.put(listDataHeader.get(0), top250); // Header, Child data
-        listDataChild.put(listDataHeader.get(1), nowShowing);
-        listDataChild.put(listDataHeader.get(2), comingSoon);
+        mListDataChild.put(mListDataHeader.get(0), top250); // Header, Child data
+        mListDataChild.put(mListDataHeader.get(1), nowShowing);
+        mListDataChild.put(mListDataHeader.get(2), comingSoon);
     }
 
     public static class PlanetFragment extends Fragment {
@@ -235,9 +242,9 @@ public class MainActivity extends FragmentActivity {
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_planet, container, false);
+            View rootView = inflater.inflate(R.layout.fragment_drawer, container, false);
             int i = getArguments().getInt(ARG_PLANET_NUMBER);
-            String planet = getResources().getStringArray(R.array.planets_array)[i];
+            String planet = getResources().getStringArray(R.array.drawer_items)[i];
 
             int imageId = getResources().getIdentifier(planet.toLowerCase(Locale.getDefault()),
                     "drawable", getActivity().getPackageName());
