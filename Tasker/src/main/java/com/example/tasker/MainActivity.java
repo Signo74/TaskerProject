@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -23,7 +24,8 @@ import android.widget.ExpandableListView.OnGroupExpandListener;
 import android.widget.ImageView;
 import android.widget.ListView;
 
-import java.util.ArrayList;
+import com.example.tasker.utils.TaskerUtils;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -39,6 +41,8 @@ public class MainActivity extends FragmentActivity {
     private ActionBarDrawerToggle mDrawerToggle;
     private CharSequence mDrawerTitle;
     private CharSequence mTitle;
+    String headerItems[];
+    private TaskerUtils utils = new TaskerUtils();
 
     @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
     @Override
@@ -69,14 +73,23 @@ public class MainActivity extends FragmentActivity {
         getActionBar().setHomeButtonEnabled(true);
 
         mExpListView = (ExpandableListView) findViewById(R.id.lvExp);
-        prepareListData();
+        //Populate the list from the predefined string-arrays from strings.xml
+        headerItems = getResources().getStringArray(R.array.tasks);
+        mListDataHeader = utils.populateHeader(mListDataHeader, getResources().getStringArray(R.array.tasks));
+        for (int i = 0 ; i < headerItems.length ; i++) {
+            int arrayId = getResources().getIdentifier(headerItems[i], "array", this.getPackageName());
+            String childItems[] = getResources().getStringArray(arrayId);
+            Log.d("Child", String.valueOf(childItems.length));
+            mListDataChild = utils.populateChildren(mListDataChild, headerItems[i], childItems);
+        }
+
+        Log.d("Child", mListDataChild.toString());
+
         mExpListAdapter = new ExpandableListAdapter(this, mListDataHeader, mListDataChild);
         mExpListView.setAdapter(mExpListAdapter);
         mExpListView.setOnGroupClickListener(new OnGroupClickListener() {
-
             @Override
-            public boolean onGroupClick(ExpandableListView parent, View v,
-                                        int groupPosition, long id) {
+            public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
                 return false;
             }
         });
@@ -94,10 +107,8 @@ public class MainActivity extends FragmentActivity {
         });
 
         mExpListView.setOnChildClickListener(new OnChildClickListener() {
-
             @Override
-            public boolean onChildClick(ExpandableListView parent, View v,
-                                        int groupPosition, int childPosition, long id) {
+            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
                 return false;
             }
         });
@@ -171,9 +182,9 @@ public class MainActivity extends FragmentActivity {
         });
         /*
         // Create a new fragment and specify the planet to show based on position
-        Fragment fragment = new PlanetFragment();
+        Fragment fragment = new DrawerFragment();
         Bundle args = new Bundle();
-        args.putInt(PlanetFragment.ARG_PLANET_NUMBER, position);
+        args.putInt(DrawerFragment.ARG_PLANET_NUMBER, position);
         fragment.setArguments(args);
 
         // Insert the fragment by replacing any existing fragment
@@ -194,49 +205,10 @@ public class MainActivity extends FragmentActivity {
         getActionBar().setTitle(mTitle);
     }
 
-    private void prepareListData() {
-        mListDataHeader = new ArrayList<String>();
-        mListDataChild = new HashMap<String, List<String>>();
-
-        //Header titles data
-        mListDataHeader.add("Today");
-        mListDataHeader.add("Tommorow");
-        mListDataHeader.add("Someday");
-
-        //Child title data
-        List<String> top250 = new ArrayList<String>();
-        top250.add("The Shawshank Redemption");
-        top250.add("The Godfather");
-        top250.add("The Godfather: Part II");
-        top250.add("Pulp Fiction");
-        top250.add("The Good, the Bad and the Ugly");
-        top250.add("The Dark Knight");
-        top250.add("12 Angry Men");
-
-        List<String> nowShowing = new ArrayList<String>();
-        nowShowing.add("The Conjuring");
-        nowShowing.add("Despicable Me 2");
-        nowShowing.add("Turbo");
-        nowShowing.add("Grown Ups 2");
-        nowShowing.add("Red 2");
-        nowShowing.add("The Wolverine");
-
-        List<String> comingSoon = new ArrayList<String>();
-        comingSoon.add("2 Guns");
-        comingSoon.add("The Smurfs 2");
-        comingSoon.add("The Spectacular Now");
-        comingSoon.add("The Canyons");
-        comingSoon.add("Europa Report");
-
-        mListDataChild.put(mListDataHeader.get(0), top250); // Header, Child data
-        mListDataChild.put(mListDataHeader.get(1), nowShowing);
-        mListDataChild.put(mListDataHeader.get(2), comingSoon);
-    }
-
-    public static class PlanetFragment extends Fragment {
+    public static class DrawerFragment extends Fragment {
         public static final String ARG_PLANET_NUMBER = "planet_number";
 
-        public PlanetFragment() {
+        public DrawerFragment() {
         }
 
         @Override
