@@ -23,47 +23,6 @@
         <item>Tommorow</item>
         <item>Someday</item>
     </string-array>
-    <string-array name="Today" id="Today">
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
-        <item>4</item>
-    </string-array>
-    <string-array name="Tommorow">
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
-        <item>4</item>
-    </string-array>
-    <string-array name="Someday">
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
-        <item>4</item>
-    </string-array>
 
-    <!-- Projects -->
-    <string-array name="projects">
-        <item>Tasker</item>
-        <item>Habit</item>
-        <item>Test</item>
-    </string-array>
-    <string-array name="Tasker">
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
-        <item>4</item>
-    </string-array>
-    <string-array name="Habit">
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
-        <item>4</item>
-    </string-array>
-    <string-array name="Test">
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
-        <item>4</item>
-    </string-array>
+    <!-- Create the main SQL Strings. -->
 </resources>

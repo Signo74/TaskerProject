@@ -83,8 +83,6 @@ public class MainActivity extends FragmentActivity {
             mListDataChild = utils.populateChildren(mListDataChild, headerItems[i], childItems);
         }
 
-        Log.d("Child", mListDataChild.toString());
-
         mExpListAdapter = new ExpandableListAdapter(this, mListDataHeader, mListDataChild);
         mExpListView.setAdapter(mExpListAdapter);
         mExpListView.setOnGroupClickListener(new OnGroupClickListener() {
@@ -97,12 +95,14 @@ public class MainActivity extends FragmentActivity {
         mExpListView.setOnGroupExpandListener(new OnGroupExpandListener() {
             @Override
             public void onGroupExpand(int groupPosition) {
+                //TODO: create on expand handler
             }
         });
 
         mExpListView.setOnGroupCollapseListener(new OnGroupCollapseListener() {
             @Override
             public void onGroupCollapse(int groupPosition) {
+                //TODO: create on collapse handler
             }
         });
 
