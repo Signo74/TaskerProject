@@ -8,7 +8,7 @@ import java.util.Date;
  * Created by victorm on 11/15/13.
  */
 public class Task {
-
+    private Long id;
     private String title;
     private String description;
     private String image;
@@ -91,18 +91,27 @@ public class Task {
         this.customizationSettings = customizationSettings;
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     @Override
     public String toString() {
-        return new org.apache.commons.lang.builder.ToStringBuilder(this)
-                .append("title", title)
-                .append("description", description)
-                .append("image", image)
-                .append("location", location)
-                .append("dueDate", dueDate)
-                .append("comments", comments)
-                .append("subTasks", subTasks)
-                .append("shareSettings", shareSettings)
-                .append("customizationSettings", customizationSettings)
-                .toString();
+        final StringBuilder sb = new StringBuilder("Task{");
+        sb.append("title='").append(title).append('\'');
+        sb.append(", description='").append(description).append('\'');
+        sb.append(", image='").append(image).append('\'');
+        sb.append(", location='").append(location).append('\'');
+        sb.append(", dueDate=").append(dueDate);
+        sb.append(", comments=").append(comments);
+        sb.append(", subTasks=").append(subTasks);
+        sb.append(", shareSettings=").append(shareSettings);
+        sb.append(", customizationSettings=").append(customizationSettings);
+        sb.append('}');
+        return sb.toString();
     }
 }
