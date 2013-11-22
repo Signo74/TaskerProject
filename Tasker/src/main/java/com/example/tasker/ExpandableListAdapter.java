@@ -16,7 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 
 public class ExpandableListAdapter
-    extends BaseExpandableListAdapter{
+        extends BaseExpandableListAdapter {
 
     private Context _context;
     private List<String> _listDataHeader;

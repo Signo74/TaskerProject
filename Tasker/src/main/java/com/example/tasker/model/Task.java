@@ -14,10 +14,20 @@ public class Task {
     private String image;
     private String location;
     private Date dueDate;
+    private Date repeatDate;
+    private String repeatDay;
     private ArrayList<String> comments;
     private ArrayList<Task> subTasks;
     private TaskSharingSettings shareSettings;
     private TaskCustomizationSettings customizationSettings;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getTitle() {
         return title;
@@ -91,22 +101,33 @@ public class Task {
         this.customizationSettings = customizationSettings;
     }
 
-    public Long getId() {
-        return id;
+    public Date getRepeatDate() {
+        return repeatDate;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setRepeatDate(Date repeatDate) {
+        this.repeatDate = repeatDate;
+    }
+
+    public String getRepeatDay() {
+        return repeatDay;
+    }
+
+    public void setRepeatDay(String repeatDay) {
+        this.repeatDay = repeatDay;
     }
 
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("Task{");
-        sb.append("title='").append(title).append('\'');
+        sb.append("id=").append(id);
+        sb.append(", title='").append(title).append('\'');
         sb.append(", description='").append(description).append('\'');
         sb.append(", image='").append(image).append('\'');
         sb.append(", location='").append(location).append('\'');
         sb.append(", dueDate=").append(dueDate);
+        sb.append(", repeatDate=").append(repeatDate);
+        sb.append(", repeatDay='").append(repeatDay).append('\'');
         sb.append(", comments=").append(comments);
         sb.append(", subTasks=").append(subTasks);
         sb.append(", shareSettings=").append(shareSettings);

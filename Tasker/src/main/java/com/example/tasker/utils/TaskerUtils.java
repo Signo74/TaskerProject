@@ -13,33 +13,32 @@ import java.util.List;
  */
 public class TaskerUtils {
 
-    public void TaskerUtils(){
+    public void TaskerUtils() {
     }
 
-    public List<String> populateHeader( List<String> mListDataHeader, String headerItems[]){
+    public List<String> populateHeader(List<String> mListDataHeader, String headerItems[]) {
         if (headerItems == null || headerItems.length == 0) {
             return null;
         }
         try {
             String childItems[];
-            if (mListDataHeader == null){
+            if (mListDataHeader == null) {
                 mListDataHeader = new ArrayList<String>();
             } else {
                 mListDataHeader.clear();
             }
 
-            for (int i = 0 ; i< headerItems.length ; i++){
+            for (int i = 0; i < headerItems.length; i++) {
                 mListDataHeader.add(headerItems[i]);
             }
             return mListDataHeader;
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             //TODO: print out the exception.
             return null;
         }
     }
 
-    public HashMap<String, List<String>> populateChildren(HashMap<String, List<String>>mListDataChild,String index, String childItems[]){
+    public HashMap<String, List<String>> populateChildren(HashMap<String, List<String>> mListDataChild, String index, String childItems[]) {
         if (childItems == null || childItems.length == 0) {
             Log.d("Child", "childItems = null");
             return null;
@@ -54,15 +53,14 @@ public class TaskerUtils {
                 mListDataChild.clear();
             }
 
-            for (int i = 0 ; i< childItems.length ; i++){
+            for (int i = 0; i < childItems.length; i++) {
                 temp.add(childItems[i]);
             }
             mListDataChild.put(index, temp);
             Log.d("Child", mListDataChild.toString());
 
             return mListDataChild;
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             //TODO: print out the exception.
             return null;
         }

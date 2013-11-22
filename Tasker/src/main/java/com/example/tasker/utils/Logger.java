@@ -9,11 +9,11 @@ public class Logger {
     private static Logger instance = null;
     private static String mode;
 
-    private Logger(){
+    private Logger() {
     }
 
-    public Logger getInstance(){
-        if (instance == null){
+    public Logger getInstance() {
+        if (instance == null) {
             instance = new Logger();
         }
         return instance;

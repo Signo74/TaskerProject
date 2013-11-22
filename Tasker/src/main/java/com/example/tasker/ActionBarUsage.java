@@ -85,5 +85,5 @@ public class ActionBarUsage extends ActionBarActivity {
                             "Searching for: " + query + "...", Toast.LENGTH_SHORT).show();
                     return true;
                 }
-    };
+            };
 }

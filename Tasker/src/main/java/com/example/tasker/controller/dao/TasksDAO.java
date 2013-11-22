@@ -6,7 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.example.tasker.model.Task;
-import com.example.tasker.model.TasksDBHelper;
+import com.example.tasker.controller.TasksDBHelper;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -18,7 +18,7 @@ import java.util.List;
 public class TasksDAO {
     private SQLiteDatabase database;
     private TasksDBHelper dbHelper;
-    private String[] allColumns = { TasksDBHelper.ID_COLUMN, TasksDBHelper.TITLE_COLUMN};
+    private String[] allColumns = {TasksDBHelper.ID_COLUMN, TasksDBHelper.TITLE_COLUMN};
 
     public TasksDAO(Context cntx) {
         dbHelper = new TasksDBHelper(cntx);
@@ -28,12 +28,12 @@ public class TasksDAO {
         database = dbHelper.getWritableDatabase();
     }
 
-    public void close(){
+    public void close() {
         dbHelper.close();
     }
 
     //TODO: return Task
-    public Task createTask(String title){
+    public Task createTask(String title) {
         ContentValues values = new ContentValues();
         values.put(dbHelper.TITLE_COLUMN, title);
         long insertID = database.insert(dbHelper.TASK_TABLE_NAME, null, values);
@@ -63,7 +63,7 @@ public class TasksDAO {
         List<Task> allTasks = new ArrayList<Task>();
         Cursor cursor = database.query(dbHelper.TASK_TABLE_NAME, allColumns, null, null, null, null, null);
         cursor.moveToFirst();
-        while (!cursor.isAfterLast()){
+        while (!cursor.isAfterLast()) {
             Task task = cursorToTask(cursor);
             allTasks.add(task);
             cursor.moveToNext();

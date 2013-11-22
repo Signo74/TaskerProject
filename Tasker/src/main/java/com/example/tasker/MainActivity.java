@@ -53,7 +53,7 @@ public class MainActivity extends FragmentActivity {
         mDrawerItems = getResources().getStringArray(R.array.drawer_items);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerList = (ListView) findViewById(R.id.left_drawer);
-        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,R.drawable.ic_drawer, R.string.drawer_open, R.string.drawer_close) {
+        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.drawable.ic_drawer, R.string.drawer_open, R.string.drawer_close) {
 
             public void onDrawerClosed(View view) {
                 getActionBar().setTitle(mTitle);
@@ -74,14 +74,16 @@ public class MainActivity extends FragmentActivity {
 
         mExpListView = (ExpandableListView) findViewById(R.id.lvExp);
         //Populate the list from the predefined string-arrays from strings.xml
-        headerItems = getResources().getStringArray(R.array.tasks);
-        mListDataHeader = utils.populateHeader(mListDataHeader, getResources().getStringArray(R.array.tasks));
-        for (int i = 0 ; i < headerItems.length ; i++) {
+        headerItems = getResources().getStringArray(R.array.tabs_items);
+        mListDataHeader = utils.populateHeader(mListDataHeader, getResources().getStringArray(R.array.tabs_items));
+
+        //TODO: add code based on the SQL DB for the children
+        /*for (int i = 0 ; i < headerItems.length ; i++) {
             int arrayId = getResources().getIdentifier(headerItems[i], "array", this.getPackageName());
             String childItems[] = getResources().getStringArray(arrayId);
             Log.d("Child", String.valueOf(childItems.length));
             mListDataChild = utils.populateChildren(mListDataChild, headerItems[i], childItems);
-        }
+        }*/
 
         mExpListAdapter = new ExpandableListAdapter(this, mListDataHeader, mListDataChild);
         mExpListView.setAdapter(mExpListAdapter);
@@ -170,7 +172,9 @@ public class MainActivity extends FragmentActivity {
         }
     }
 
-    /** Swaps fragments in the main content view */
+    /**
+     * Swaps fragments in the main content view
+     */
     private void selectItem(int position) {
         mExpListView.setOnGroupClickListener(new OnGroupClickListener() {
 

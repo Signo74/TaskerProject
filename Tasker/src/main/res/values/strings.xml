@@ -17,11 +17,25 @@
         <item>Notes</item>
     </string-array>
 
-    <!-- Tasks -->
-    <string-array name="tasks">
+    <!-- Main categories-->
+    <string-array name="tabs_items">
+        <item>Tasks</item>
+        <item>Lists</item>
+        <item>Projects</item>
+    </string-array>
+
+    <!-- Task categories by date -->
+    <string-array name="tasksByDate">
         <item>Today</item>
         <item>Tommorow</item>
         <item>Someday</item>
+    </string-array>
+
+    <!-- Task categories by type -->
+    <string-array name="tasksByType">
+        <item>Personal</item>
+        <item>Work</item>
+        <item>Shared</item>
     </string-array>
 
     <!-- Create the main SQL Strings. -->
