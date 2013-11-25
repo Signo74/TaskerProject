@@ -16,10 +16,11 @@ public class Task {
     private Date dueDate;
     private Date repeatDate;
     private String repeatDay;
+    private int priority;
     private ArrayList<String> comments;
     private ArrayList<Task> subTasks;
-    private TaskSharingSettings shareSettings;
-    private TaskCustomizationSettings customizationSettings;
+    private SharingSettings shareSettings;
+    private CustomizationSettings customizationSettings;
 
     public Long getId() {
         return id;
@@ -69,38 +70,6 @@ public class Task {
         this.dueDate = dueDate;
     }
 
-    public ArrayList<String> getComments() {
-        return comments;
-    }
-
-    public void setComments(ArrayList<String> comments) {
-        this.comments = comments;
-    }
-
-    public ArrayList<Task> getSubTasks() {
-        return subTasks;
-    }
-
-    public void setSubTasks(ArrayList<Task> subTasks) {
-        this.subTasks = subTasks;
-    }
-
-    public TaskSharingSettings getShareSettings() {
-        return shareSettings;
-    }
-
-    public void setShareSettings(TaskSharingSettings shareSettings) {
-        this.shareSettings = shareSettings;
-    }
-
-    public TaskCustomizationSettings getCustomizationSettings() {
-        return customizationSettings;
-    }
-
-    public void setCustomizationSettings(TaskCustomizationSettings customizationSettings) {
-        this.customizationSettings = customizationSettings;
-    }
-
     public Date getRepeatDate() {
         return repeatDate;
     }
@@ -117,6 +86,46 @@ public class Task {
         this.repeatDay = repeatDay;
     }
 
+    public int getPriority() {
+        return priority;
+    }
+
+    public void setPriority(int priority) {
+        this.priority = priority;
+    }
+
+    public ArrayList<String> getComments() {
+        return comments;
+    }
+
+    public void setComments(ArrayList<String> comments) {
+        this.comments = comments;
+    }
+
+    public ArrayList<Task> getSubTasks() {
+        return subTasks;
+    }
+
+    public void setSubTasks(ArrayList<Task> subTasks) {
+        this.subTasks = subTasks;
+    }
+
+    public SharingSettings getShareSettings() {
+        return shareSettings;
+    }
+
+    public void setShareSettings(SharingSettings shareSettings) {
+        this.shareSettings = shareSettings;
+    }
+
+    public CustomizationSettings getCustomizationSettings() {
+        return customizationSettings;
+    }
+
+    public void setCustomizationSettings(CustomizationSettings customizationSettings) {
+        this.customizationSettings = customizationSettings;
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("Task{");
@@ -128,6 +137,7 @@ public class Task {
         sb.append(", dueDate=").append(dueDate);
         sb.append(", repeatDate=").append(repeatDate);
         sb.append(", repeatDay='").append(repeatDay).append('\'');
+        sb.append(", priority=").append(priority);
         sb.append(", comments=").append(comments);
         sb.append(", subTasks=").append(subTasks);
         sb.append(", shareSettings=").append(shareSettings);

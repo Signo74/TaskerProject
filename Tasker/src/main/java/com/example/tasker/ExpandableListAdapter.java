@@ -60,7 +60,7 @@ public class ExpandableListAdapter
 
     @Override
     public int getChildrenCount(int groupPosition) {
-        return this._listDataChild.get(this._listDataHeader.get(groupPosition)).size();
+        return 0; //TODO: this._listDataChild.get(this._listDataHeader.get(groupPosition)).size();
     }
 
     @Override
