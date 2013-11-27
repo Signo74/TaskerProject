@@ -5,23 +5,24 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.example.tasker.model.Task;
+import com.example.tasker.controller.dbhelper.DrawerItemsDBHelper;
 import com.example.tasker.controller.dbhelper.TasksDBHelper;
+import com.example.tasker.model.Task;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by victorm on 11/15/13.
+ * Created by victorm on 11/26/13.
  */
-public class TasksDAO {
+public class DrawerItemsDAO {
     private SQLiteDatabase database;
-    private TasksDBHelper dbHelper;
+    private DrawerItemsDBHelper dbHelper;
     private String[] allColumns = {TasksDBHelper.ID_COLUMN, TasksDBHelper.TITLE_COLUMN};
 
-    public TasksDAO(Context cntx) {
-        dbHelper = new TasksDBHelper(cntx);
+    public DrawerItemsDAO(Context cntx) {
+        dbHelper = new DrawerItemsDBHelper(cntx);
     }
 
     public void open() throws SQLException {
@@ -33,38 +34,28 @@ public class TasksDAO {
     }
 
     //TODO: return Task
-    public Task insertTask(String title) {
+    public Task insertDrawerItem(String title) {
         ContentValues values = new ContentValues();
         values.put(dbHelper.TITLE_COLUMN, title);
         long insertID = database.insert(dbHelper.TABLE_NAME, null, values);
         Cursor cursor = database.query(dbHelper.TABLE_NAME, allColumns, dbHelper.ID_COLUMN + " = " + insertID, null, null, null, null);
         cursor.moveToFirst();
-        Task newTask = cursorToTask(cursor);
+        Task newTask = cursorToDrawerItem(cursor);
         cursor.close();
         return newTask;
     }
 
-    public void deleteTask(Task task) {
+    public void deleteDrawerItem(Task task) {
         long id = task.getId();
         database.delete(dbHelper.TABLE_NAME, dbHelper.ID_COLUMN + "=" + id, null);
     }
 
-    /*
-     * TODO: create functions for the following common tasks:
-     * 1) get all tasks - DONE
-     * 2) get a set of selected tasks
-     * 3) delete all tasks
-     * 4) delete a set of selected tasks
-     * 5) re-order tasks
-     * 6) modify a single task
-     */
-
-    public List<Task> getAllTasks() {
+    public List<Task> getAllDrawerItems() {
         List<Task> allTasks = new ArrayList<Task>();
         Cursor cursor = database.query(dbHelper.TABLE_NAME, allColumns, null, null, null, null, null);
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
-            Task task = cursorToTask(cursor);
+            Task task = cursorToDrawerItem(cursor);
             allTasks.add(task);
             cursor.moveToNext();
         }
@@ -72,7 +63,7 @@ public class TasksDAO {
         return allTasks;
     }
 
-    private Task cursorToTask(Cursor cursor) {
+    private Task cursorToDrawerItem(Cursor cursor) {
         Task task = new Task();
         task.setId(cursor.getLong(0));
         task.setTitle(cursor.getString(1));

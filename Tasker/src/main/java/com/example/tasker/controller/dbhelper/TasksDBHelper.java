@@ -1,4 +1,4 @@
-package com.example.tasker.controller;
+package com.example.tasker.controller.dbhelper;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
@@ -9,7 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
  */
 public class TasksDBHelper extends SQLiteOpenHelper {
 
-    public static final String TASK_TABLE_NAME = "tasks";
+    public static final String TABLE_NAME = "tasks";
     public static final String DATABASE_NAME = "tasks.db";
     private static int DATABASE_VERSION = 1;
     public static final String ID_COLUMN = "id";
@@ -24,12 +24,12 @@ public class TasksDBHelper extends SQLiteOpenHelper {
     public static final String COMMENTS_COLUMN = "comments";
     //TODO: insert columns for customizations and sharing
     private static final String DATABASE_CREATE = "create table "
-            + TASK_TABLE_NAME + "(" + ID_COLUMN
+            + TABLE_NAME + "(" + ID_COLUMN
             + " integer primary key autoincrement, " + TITLE_COLUMN
             + " text not null);";
 
     public TasksDBHelper(Context context) {
-        super(context, TASK_TABLE_NAME, null, DATABASE_VERSION);
+        super(context, TABLE_NAME, null, DATABASE_VERSION);
     }
 
     @Override
@@ -43,7 +43,7 @@ public class TasksDBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int oldDB, int newDB) {
-        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TASK_TABLE_NAME + ";");
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME + ";");
         createTable(sqLiteDatabase);
     }
 }
