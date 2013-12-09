@@ -9,6 +9,7 @@ import java.util.Date;
  */
 public class Task {
     private Long id;
+    private int type; //describes if this is a Task, To-do, project item, to-do list, project
     private String title;
     private String description;
     private String image;
@@ -28,6 +29,14 @@ public class Task {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
     }
 
     public String getTitle() {
@@ -130,6 +139,7 @@ public class Task {
     public String toString() {
         final StringBuilder sb = new StringBuilder("Task{");
         sb.append("id=").append(id);
+        sb.append(", type=").append(type);
         sb.append(", title='").append(title).append('\'');
         sb.append(", description='").append(description).append('\'');
         sb.append(", image='").append(image).append('\'');

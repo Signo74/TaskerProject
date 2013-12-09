@@ -11,11 +11,6 @@
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
     <string name="action_websearch">Web search</string>
-    <string-array name="drawer_items">
-        <item>Tasks</item>
-        <item>Projects</item>
-        <item>Notes</item>
-    </string-array>
 
     <!-- Main categories-->
     <string-array name="tabs_items">

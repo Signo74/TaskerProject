@@ -39,6 +39,7 @@ public class TaskerUtils {
     }
 
     public HashMap<String, List<String>> populateChildren(HashMap<String, List<String>> mListDataChild, String index, String childItems[]) {
+        //TODO: modify to convert the DB fields to the List<String> items required for the child items.
         if (childItems == null || childItems.length == 0) {
             Log.d("Child", "childItems = null");
             return null;
