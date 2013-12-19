@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -36,7 +37,7 @@ public class MainActivity extends FragmentActivity {
     ExpandableListAdapter mExpListAdapter;
     ExpandableListView mExpListView;
     List<String> mListDataHeader;
-    HashMap<String, List<String>> mListDataChild;
+    HashMap<String, List<Task>> mListDataChild;
     private String[] mDrawerItems;
     private ListView mDrawerList;
     private DrawerLayout mDrawerLayout;
@@ -56,13 +57,16 @@ public class MainActivity extends FragmentActivity {
         try {
             tasksDAO = new TasksDAO(this);
             tasksDAO.open();
+            List<Task> childItemTitles = tasksDAO.getAllTasks();
+            Log.i("[> info: ", childItemTitles.toString());
+
+            ArrayAdapter<Task> adapter = new ArrayAdapter<Task>(this, android.R.layout.simple_list_item_1, childItemTitles);
         } catch (SQLException ex) {
             //TODO: handle gracefully
         } finally {
             tasksDAO.close();
         }
 
-        List<Task> childItemTitles = tasksDAO.getAllTasks();
 
         mDrawerItems = getResources().getStringArray(R.array.tasksByDate);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);

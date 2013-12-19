@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.example.tasker.model.Task;
 import com.example.tasker.controller.dbhelper.TasksDBHelper;
@@ -74,6 +75,7 @@ public class TasksDAO {
 
     private Task cursorToTask(Cursor cursor) {
         Task task = new Task();
+        Log.i("[> info: ", cursor.getString(1));
         task.setId(cursor.getLong(0));
         task.setTitle(cursor.getString(1));
         return task;

@@ -16,7 +16,7 @@ public class Task {
     private String location;
     private Date dueDate;
     private Date repeatDate;
-    private String repeatDay;
+    private int repeatDay;
     private int priority;
     private ArrayList<String> comments;
     private ArrayList<Task> subTasks;
@@ -87,11 +87,11 @@ public class Task {
         this.repeatDate = repeatDate;
     }
 
-    public String getRepeatDay() {
+    public int getRepeatDay() {
         return repeatDay;
     }
 
-    public void setRepeatDay(String repeatDay) {
+    public void setRepeatDay(int repeatDay) {
         this.repeatDay = repeatDay;
     }
 

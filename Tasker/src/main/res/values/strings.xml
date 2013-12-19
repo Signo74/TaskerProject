@@ -11,6 +11,7 @@
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
     <string name="action_websearch">Web search</string>
+    <string name="text_new_item">Add task</string>
 
     <!-- Main categories-->
     <string-array name="tabs_items">
