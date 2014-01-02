@@ -1,6 +1,7 @@
 package com.example.tasker;
 
 import android.annotation.TargetApi;
+import android.content.ClipData;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.support.v4.app.FragmentActivity;
@@ -16,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.ExpandableListView.OnChildClickListener;
 import android.widget.ExpandableListView.OnGroupClickListener;
@@ -181,7 +183,7 @@ public class MainActivity extends FragmentActivity {
                 return false;
             }
         });
-        //TODO: implement propper swapping of fragments for main View.
+        //TODO: implement proper swapping of fragments for main View.
     }
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
@@ -189,6 +191,12 @@ public class MainActivity extends FragmentActivity {
     public void setTitle(CharSequence title) {
         mTitle = title;
         getActionBar().setTitle(mTitle);
+    }
+
+    public void addTask(){
+        EditText editText = (EditText) findViewById(R.id.etf_new_item);
+        Log.i("[> new task title: ", editText.getText().toString());
+        utils.quickAddTask(tasksDAO, editText.getText().toString());
     }
 
     public static class DrawerFragment extends Fragment {
