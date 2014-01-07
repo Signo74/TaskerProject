@@ -12,7 +12,7 @@ public class TasksDBHelper extends SQLiteOpenHelper {
     public static final String TABLE_NAME = "tasks";
     public static final String DATABASE_NAME = "tasks.db";
     private static int DATABASE_VERSION = 1;
-    public static final String ID_COLUMN = "id";
+    public static final String ID_COLUMN = "_id";
     public static final String TITLE_COLUMN = "title";
    /* public static final String TYPE_COLUMN = "type";
     public static final String DESCRIPTION_COLUMN = "description";
@@ -21,24 +21,13 @@ public class TasksDBHelper extends SQLiteOpenHelper {
     public static final String DUE_DATE_COLUMN = "duedate";
     public static final String REPEAT_DATE_COLUMN = "repeatdate";
     public static final String REPEAT_DAYS_COLUMN = "repeatdays";
-    public static final String COMMENTS_COLUMN = "comments";
+    public static final String COMMENTS_COLUMN = "comments"; */
 
-    public static final String DEFAULT_DESCRIPTION = "Default task created with the installation.";
-    public static final String DEFAULT_COMMENT = "Default comment for the first task.";*/
-   public static final String DEFAULT_TITLE = "Sample task";
-    //TODO: insert columns for customizations and sharing
+    //TODO: Modify initial creation string to insert all necessary fields.
     private static final String DATABASE_CREATE = "create table "
-            + TABLE_NAME + "(" + ID_COLUMN + " 0, "
-           + TITLE_COLUMN + " " + DEFAULT_TITLE + ", "
-            /*+ TYPE_COLUMN + " 0, "
-            + DESCRIPTION_COLUMN + " " + DEFAULT_DESCRIPTION + ", "
-            + IMAGE_COLUMN +  " null, "
-            + LOCATION_COLUMN + " null, "
-            + DUE_DATE_COLUMN + " null,"
-            + REPEAT_DATE_COLUMN + " null, "
-            + REPEAT_DAYS_COLUMN + " 0, "
-            + COMMENTS_COLUMN + " " + DEFAULT_COMMENT + ", "*/
-            + ");";
+            + TABLE_NAME + "(" + ID_COLUMN
+            + " integer primary key autoincrement, " + TITLE_COLUMN
+            + " text not null);";
 
     public TasksDBHelper(Context context) {
         super(context, TABLE_NAME, null, DATABASE_VERSION);

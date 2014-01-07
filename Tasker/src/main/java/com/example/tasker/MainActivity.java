@@ -61,8 +61,6 @@ public class MainActivity extends FragmentActivity {
             tasksDAO.open();
             List<Task> childItemTitles = tasksDAO.getAllTasks();
             Log.i("[> info: ", childItemTitles.toString());
-
-            ArrayAdapter<Task> adapter = new ArrayAdapter<Task>(this, android.R.layout.simple_list_item_1, childItemTitles);
         } catch (SQLException ex) {
             //TODO: handle gracefully
         } finally {
@@ -193,10 +191,10 @@ public class MainActivity extends FragmentActivity {
         getActionBar().setTitle(mTitle);
     }
 
-    public void addTask(){
+    public void addTask(View newItemButton){
         EditText editText = (EditText) findViewById(R.id.etf_new_item);
-        Log.i("[> new task title: ", editText.getText().toString());
-        utils.quickAddTask(tasksDAO, editText.getText().toString());
+        Log.i("[> new task title: ", String.valueOf(editText.getText()));
+        utils.quickAddTask(tasksDAO, String.valueOf(editText.getText()));
     }
 
     public static class DrawerFragment extends Fragment {
