@@ -18,6 +18,7 @@ public class Task {
     private Date repeatDate;
     private int repeatDay;
     private int priority;
+    private Boolean done;
     private ArrayList<String> comments;
     private ArrayList<Task> subTasks;
     private SharingSettings shareSettings;
@@ -103,6 +104,14 @@ public class Task {
         this.priority = priority;
     }
 
+    public Boolean getDone() {
+        return done;
+    }
+
+    public void setDone(Boolean done) {
+        this.done = done;
+    }
+
     public ArrayList<String> getComments() {
         return comments;
     }
@@ -135,24 +144,4 @@ public class Task {
         this.customizationSettings = customizationSettings;
     }
 
-    @Override
-    public String toString() {
-        final StringBuilder sb = new StringBuilder("Task{");
-        sb.append("id=").append(id);
-        sb.append(", type=").append(type);
-        sb.append(", title='").append(title).append('\'');
-        sb.append(", description='").append(description).append('\'');
-        sb.append(", image='").append(image).append('\'');
-        sb.append(", location='").append(location).append('\'');
-        sb.append(", dueDate=").append(dueDate);
-        sb.append(", repeatDate=").append(repeatDate);
-        sb.append(", repeatDay='").append(repeatDay).append('\'');
-        sb.append(", priority=").append(priority);
-        sb.append(", comments=").append(comments);
-        sb.append(", subTasks=").append(subTasks);
-        sb.append(", shareSettings=").append(shareSettings);
-        sb.append(", customizationSettings=").append(customizationSettings);
-        sb.append('}');
-        return sb.toString();
-    }
 }

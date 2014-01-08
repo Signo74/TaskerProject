@@ -49,6 +49,7 @@ public class MainActivity extends FragmentActivity {
     String headerItems[];
     private TaskerUtils utils = new TaskerUtils();
     private TasksDAO tasksDAO;
+    private EditText editText;
 
     @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
     @Override
@@ -59,13 +60,11 @@ public class MainActivity extends FragmentActivity {
         try {
             tasksDAO = new TasksDAO(this);
             tasksDAO.open();
-            List<Task> childItemTitles = tasksDAO.getAllTasks();
-            Log.i("[> info: ", childItemTitles.toString());
         } catch (SQLException ex) {
             //TODO: handle gracefully
-        } finally {
-            tasksDAO.close();
         }
+
+        editText = (EditText) findViewById(R.id.etf_new_item);
 
 
         mDrawerItems = getResources().getStringArray(R.array.tasksByDate);
@@ -97,11 +96,10 @@ public class MainActivity extends FragmentActivity {
         mListDataHeader = utils.populateHeader(mListDataHeader, getResources().getStringArray(R.array.tasksByDate));
 
         //TODO: add code based on the SQL DB for the children
-        /*for (int i = 0 ; i < headerItems.length ; i++) {
-            int arrayId = getResources().getIdentifier(headerItems[i], "array", this.getPackageName());
-            String childItems[] = getResources().getStringArray(arrayId);
-            mListDataChild = utils.populateChildren(mListDataChild, headerItems[i], childItemTitles);
-        }*/
+        List<Task> childItemTitles = tasksDAO.getAllTasks();
+        for (int i = 0 ; i < headerItems.length ; i++) {
+           // mListDataChild = utils.populateChildren(mListDataChild, headerItems[i], childItemTitles);
+        }
 
         mExpListAdapter = new ExpandableListAdapter(this, mListDataHeader, mListDataChild);
         mExpListView.setAdapter(mExpListAdapter);
@@ -192,10 +190,22 @@ public class MainActivity extends FragmentActivity {
     }
 
     public void addTask(View newItemButton){
-        EditText editText = (EditText) findViewById(R.id.etf_new_item);
-        Log.i("[> new task title: ", String.valueOf(editText.getText()));
+        Log.d("[> About to add task: ", String.valueOf(editText.getText()));
         utils.quickAddTask(tasksDAO, String.valueOf(editText.getText()));
     }
+
+    public void deleteTask(View newItemButton){
+        Log.d("[> About to delete all task: ", "");
+        tasksDAO.deleteAll();
+    }
+
+
+    public void getAllTasks(View newItemButton){
+        Log.d("[> About to get all task: ", "");
+        List<Task> childItemTitles = tasksDAO.getAllTasks();
+        Log.i("[> All initial rows of the DB: ", childItemTitles.toString());
+    }
+
 
     public static class DrawerFragment extends Fragment {
         public static final String DRAWER_ITEM_NUMBER = "planet_number";

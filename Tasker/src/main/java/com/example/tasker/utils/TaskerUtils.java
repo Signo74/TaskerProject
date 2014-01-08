@@ -42,25 +42,21 @@ public class TaskerUtils {
         }
     }
 
-    public HashMap<String, List<String>> populateChildren(HashMap<String, List<String>> mListDataChild, String index, String childItems[]) {
+    public HashMap<String, List<String>> populateChildren(HashMap<String, List<String>> mListDataChild, String index, List<Task> childItems) {
         //TODO: modify to convert the DB fields to the List<String> items required for the child items.
-        if (childItems == null || childItems.length == 0) {
+        if (childItems == null) {
             Log.d("Child", "childItems = null");
             return null;
         }
         try {
-            Log.d("Child", childItems.toString());
-            Log.d("Child", String.valueOf(childItems.length));
             List<String> temp = null;
+
             if (mListDataChild == null) {
                 mListDataChild = new HashMap<String, List<String>>();
             } else {
                 mListDataChild.clear();
             }
 
-            for (int i = 0; i < childItems.length; i++) {
-                temp.add(childItems[i]);
-            }
             mListDataChild.put(index, temp);
             Log.d("Child", mListDataChild.toString());
 
@@ -73,6 +69,7 @@ public class TaskerUtils {
     }
 
     public void quickAddTask(TasksDAO dao, String title){
-        Task task = dao.insertTask(title);
+        Log.i("[> title should be: ", title);
+        Task task = dao.insertTask(title, 0, "", "", "", "Today", "", "", false);
     }
 }

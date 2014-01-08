@@ -26,12 +26,29 @@
                 android:textColor="#000000"/>
             <Button
                 android:id="@+id/b_new_item"
-                android:background="@android:drawable/ic_input_add"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Add New"
                 android:layout_gravity="center"
                 android:layout_weight="0.1"
                 android:onClick="addTask"/>
+            <Button
+                android:id="@+id/b_delete_item"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Delete"
+                android:layout_gravity="center"
+                android:layout_weight="0.1"
+                android:onClick="deleteTask"/>
+
+            <Button
+                android:id="@+id/b_delete_item"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Get"
+                android:layout_gravity="center"
+                android:layout_weight="0.1"
+                android:onClick="getAllTasks"/>
         </LinearLayout>
 
         <ExpandableListView

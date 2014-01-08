@@ -33,21 +33,37 @@ public class TasksDAO {
         dbHelper.close();
     }
 
-    //TODO: return Task
-    public Task insertTask(String title) {
+    /**
+     *
+     * @param title
+     * @param type
+     * @param description
+     * @param img
+     * @param location
+     * @param dueDate
+     * @param repeatDate
+     * @param repeatDays
+     * @param done
+     * @return
+     */
+    public Task insertTask(String title, int type, String description, String img, String location, String dueDate, String repeatDate, String repeatDays, Boolean done) {
         ContentValues values = new ContentValues();
         values.put(dbHelper.TITLE_COLUMN, title);
+        values.put(dbHelper.TYPE_COLUMN, type);
+        values.put(dbHelper.DESCRIPTION_COLUMN, description);
+        values.put(dbHelper.IMAGE_COLUMN, img);
+        values.put(dbHelper.LOCATION_COLUMN, location);
+        values.put(dbHelper.DUE_DATE_COLUMN, dueDate);
+        values.put(dbHelper.REPEAT_DATE_COLUMN, repeatDate);
+        values.put(dbHelper.REPEAT_DAYS_COLUMN, repeatDays);
+        values.put(dbHelper.DONE_COLUMN, done);
+        Log.i("[> values: ", String.valueOf(values.valueSet()));
         long insertID = database.insert(dbHelper.TABLE_NAME, null, values);
         Cursor cursor = database.query(dbHelper.TABLE_NAME, allColumns, dbHelper.ID_COLUMN + " = " + insertID, null, null, null, null);
         cursor.moveToFirst();
         Task newTask = cursorToTask(cursor);
         cursor.close();
         return newTask;
-    }
-
-    public void deleteTask(Task task) {
-        long id = task.getId();
-        database.delete(dbHelper.TABLE_NAME, dbHelper.ID_COLUMN + "=" + id, null);
     }
 
     /*
@@ -73,11 +89,23 @@ public class TasksDAO {
         return allTasks;
     }
 
+
+    public void deleteTask(Task task) {
+        long id = task.getId();
+        database.delete(dbHelper.TABLE_NAME, dbHelper.ID_COLUMN + "=" + id, null);
+
+    }
+
+
+    public void deleteAll(){
+        database.delete(dbHelper.TABLE_NAME, null, null);
+    }
+
     private Task cursorToTask(Cursor cursor) {
         Task task = new Task();
-        Log.i("[> info: ", cursor.getString(1));
         task.setId(cursor.getLong(0));
         task.setTitle(cursor.getString(1));
+        Log.i("[> new task: ", task.getTitle());
         return task;
     }
 }
