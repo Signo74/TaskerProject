@@ -39,7 +39,7 @@ public class MainActivity extends FragmentActivity {
     ExpandableListAdapter mExpListAdapter;
     ExpandableListView mExpListView;
     List<String> mListDataHeader;
-    HashMap<String, List<Task>> mListDataChild;
+    HashMap<String, List<Task>> mListDataChild = new HashMap<String, List<Task>>();
     private String[] mDrawerItems;
     private ListView mDrawerList;
     private DrawerLayout mDrawerLayout;
@@ -65,8 +65,6 @@ public class MainActivity extends FragmentActivity {
         }
 
         editText = (EditText) findViewById(R.id.etf_new_item);
-
-
         mDrawerItems = getResources().getStringArray(R.array.tasksByDate);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerList = (ListView) findViewById(R.id.left_drawer);
@@ -95,10 +93,9 @@ public class MainActivity extends FragmentActivity {
         headerItems = getResources().getStringArray(R.array.tasksByDate);
         mListDataHeader = utils.populateHeader(mListDataHeader, getResources().getStringArray(R.array.tasksByDate));
 
-        //TODO: add code based on the SQL DB for the children
         List<Task> childItemTitles = tasksDAO.getAllTasks();
         for (int i = 0 ; i < headerItems.length ; i++) {
-           // mListDataChild = utils.populateChildren(mListDataChild, headerItems[i], childItemTitles);
+            mListDataChild.put(headerItems[i], childItemTitles);
         }
 
         mExpListAdapter = new ExpandableListAdapter(this, mListDataHeader, mListDataChild);
@@ -203,7 +200,7 @@ public class MainActivity extends FragmentActivity {
     public void getAllTasks(View newItemButton){
         Log.d("[> About to get all task: ", "");
         List<Task> childItemTitles = tasksDAO.getAllTasks();
-        Log.i("[> All initial rows of the DB: ", childItemTitles.toString());
+        Log.i("[> All rows of the DB: ", childItemTitles.toString());
     }
 
 

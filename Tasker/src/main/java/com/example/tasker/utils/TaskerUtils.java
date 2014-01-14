@@ -42,32 +42,6 @@ public class TaskerUtils {
         }
     }
 
-    public HashMap<String, List<String>> populateChildren(HashMap<String, List<String>> mListDataChild, String index, List<Task> childItems) {
-        //TODO: modify to convert the DB fields to the List<String> items required for the child items.
-        if (childItems == null) {
-            Log.d("Child", "childItems = null");
-            return null;
-        }
-        try {
-            List<String> temp = null;
-
-            if (mListDataChild == null) {
-                mListDataChild = new HashMap<String, List<String>>();
-            } else {
-                mListDataChild.clear();
-            }
-
-            mListDataChild.put(index, temp);
-            Log.d("Child", mListDataChild.toString());
-
-            return mListDataChild;
-        } catch (Exception e) {
-            //TODO: print out the exception.
-            return null;
-        }
-
-    }
-
     public void quickAddTask(TasksDAO dao, String title){
         Log.i("[> title should be: ", title);
         Task task = dao.insertTask(title, 0, "", "", "", "Today", "", "", false);
