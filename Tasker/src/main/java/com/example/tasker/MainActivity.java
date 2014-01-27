@@ -65,10 +65,10 @@ public class MainActivity extends FragmentActivity {
         }
 
         editText = (EditText) findViewById(R.id.etf_new_item);
+        //Nav drawer
         mDrawerItems = getResources().getStringArray(R.array.tasksByDate);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerList = (ListView) findViewById(R.id.left_drawer);
-
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.drawable.ic_drawer, R.string.drawer_open, R.string.drawer_close) {
 
             public void onDrawerClosed(View view) {
@@ -88,8 +88,8 @@ public class MainActivity extends FragmentActivity {
         getActionBar().setDisplayHomeAsUpEnabled(true);
         getActionBar().setHomeButtonEnabled(true);
 
+        //Main list view
         mExpListView = (ExpandableListView) findViewById(R.id.lvExp);
-        //Populate the list from the predefined string-arrays from strings.xml
         headerItems = getResources().getStringArray(R.array.tasksByDate);
         mListDataHeader = utils.populateHeader(mListDataHeader, getResources().getStringArray(R.array.tasksByDate));
 
