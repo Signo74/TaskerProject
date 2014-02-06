@@ -1,7 +1,6 @@
 package com.example.tasker;
 
 import android.annotation.TargetApi;
-import android.content.ClipData;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.support.v4.app.FragmentActivity;
@@ -10,6 +9,7 @@ import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
+import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,37 +19,33 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
-import android.widget.ExpandableListView.OnChildClickListener;
 import android.widget.ExpandableListView.OnGroupClickListener;
-import android.widget.ExpandableListView.OnGroupCollapseListener;
-import android.widget.ExpandableListView.OnGroupExpandListener;
 import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.example.tasker.controller.dao.TasksDAO;
+import com.example.tasker.model.ExpandableListGroup;
 import com.example.tasker.model.Task;
 import com.example.tasker.utils.TaskerUtils;
 
 import java.sql.SQLException;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
-public class MainActivity extends FragmentActivity {
-    ExpandableListAdapter mExpListAdapter;
-    ExpandableListView mExpListView;
-    List<String> mListDataHeader;
-    HashMap<String, List<Task>> mListDataChild = new HashMap<String, List<Task>>();
-    private String[] mDrawerItems;
-    private ListView mDrawerList;
-    private DrawerLayout mDrawerLayout;
-    private ActionBarDrawerToggle mDrawerToggle;
-    private CharSequence mDrawerTitle;
-    private CharSequence mTitle;
-    String headerItems[];
+public class MainActivity
+        extends FragmentActivity {
+    ExpandableListAdapter _ExpListAdapter;
+    ExpandableListView _ExpListView;
+    private String[] _DrawerItems;
+    private ListView _DrawerList;
+    private DrawerLayout _DrawerLayout;
+    private ActionBarDrawerToggle _DrawerToggle;
+    private CharSequence _DrawerTitle = "Drawer Title";
+    private CharSequence _Title = "Title";
     private TaskerUtils utils = new TaskerUtils();
     private TasksDAO tasksDAO;
     private EditText editText;
+    private SparseArray<ExpandableListGroup> groups = new SparseArray<ExpandableListGroup>();
 
     @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
     @Override
@@ -61,90 +57,67 @@ public class MainActivity extends FragmentActivity {
             tasksDAO = new TasksDAO(this);
             tasksDAO.open();
         } catch (SQLException ex) {
-            //TODO: handle gracefully
         }
 
         editText = (EditText) findViewById(R.id.etf_new_item);
         //Nav drawer
-        mDrawerItems = getResources().getStringArray(R.array.tasksByDate);
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mDrawerList = (ListView) findViewById(R.id.left_drawer);
-        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.drawable.ic_drawer, R.string.drawer_open, R.string.drawer_close) {
+        _DrawerItems = getResources().getStringArray(R.array.tasksByDate);
+        _DrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        _DrawerList = (ListView) findViewById(R.id.left_drawer);
+        _DrawerToggle = new ActionBarDrawerToggle(this, _DrawerLayout, R.drawable.ic_drawer, R.string.drawer_open, R.string.drawer_close) {
 
             public void onDrawerClosed(View view) {
-                getActionBar().setTitle(mTitle);
+                getActionBar().setTitle(_Title);
                 invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
             }
 
             public void onDrawerOpened(View drawerView) {
-                getActionBar().setTitle(mDrawerTitle);
+                getActionBar().setTitle(_DrawerTitle);
                 invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
             }
         };
 
-        mDrawerList.setAdapter(new ArrayAdapter<String>(this, R.layout.drawer_list_item, mDrawerItems));
-        mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
-        mDrawerLayout.setDrawerListener(mDrawerToggle);
+        _DrawerList.setAdapter(new ArrayAdapter<String>(this, R.layout.drawer_list_item, _DrawerItems));
+        _DrawerList.setOnItemClickListener(new DrawerItemClickListener());
+        _DrawerLayout.setDrawerListener(_DrawerToggle);
         getActionBar().setDisplayHomeAsUpEnabled(true);
         getActionBar().setHomeButtonEnabled(true);
-
         //Main list view
-        mExpListView = (ExpandableListView) findViewById(R.id.lvExp);
-        headerItems = getResources().getStringArray(R.array.tasksByDate);
-        mListDataHeader = utils.populateHeader(mListDataHeader, getResources().getStringArray(R.array.tasksByDate));
+        populateListView();
+    }
 
+    private void populateListView() {
+        _ExpListView = (ExpandableListView) findViewById(R.id.lvExp);
         List<Task> childItemTitles = tasksDAO.getAllTasks();
-        for (int i = 0 ; i < headerItems.length ; i++) {
-            mListDataChild.put(headerItems[i], childItemTitles);
+        for (String header : getResources().getStringArray(R.array.tasksByDate)) {
+            Log.d("Adding group: ", header);
+            ExpandableListGroup group = new ExpandableListGroup(header);
+            group.setHeader(header);
+            for (Task task : childItemTitles) {
+                Log.d("Adding child: ", task.getTitle());
+                group.getChildren().add(task.getTitle());
+            }
         }
-
-        mExpListAdapter = new ExpandableListAdapter(this, mListDataHeader, mListDataChild);
-        mExpListView.setAdapter(mExpListAdapter);
-        mExpListView.setOnGroupClickListener(new OnGroupClickListener() {
-            @Override
-            public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
-                return false;
-            }
-        });
-
-        mExpListView.setOnGroupExpandListener(new OnGroupExpandListener() {
-            @Override
-            public void onGroupExpand(int groupPosition) {
-                //TODO: create on expand handler
-            }
-        });
-
-        mExpListView.setOnGroupCollapseListener(new OnGroupCollapseListener() {
-            @Override
-            public void onGroupCollapse(int groupPosition) {
-                //TODO: create on collapse handler
-            }
-        });
-
-        mExpListView.setOnChildClickListener(new OnChildClickListener() {
-            @Override
-            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-                return false;
-            }
-        });
+        _ExpListAdapter = new ExpandableListAdapter(this, groups);
+        _ExpListView.setAdapter(_ExpListAdapter);
     }
 
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        mDrawerToggle.syncState();
+        _DrawerToggle.syncState();
     }
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        mDrawerToggle.onConfigurationChanged(newConfig);
+        _DrawerToggle.onConfigurationChanged(newConfig);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         //TODO: should implement propper UP vs Back logic
-        if (mDrawerToggle.onOptionsItemSelected(item)) {
+        if (_DrawerToggle.onOptionsItemSelected(item)) {
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -152,7 +125,7 @@ public class MainActivity extends FragmentActivity {
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
+        boolean drawerOpen = _DrawerLayout.isDrawerOpen(_DrawerList);
         //menu.findItem(R.id.action_share).setVisible(!drawerOpen);
         return super.onPrepareOptionsMenu(menu);
     }
@@ -168,7 +141,7 @@ public class MainActivity extends FragmentActivity {
      * Swaps fragments in the main content view
      */
     private void selectItem(int position) {
-        mExpListView.setOnGroupClickListener(new OnGroupClickListener() {
+        _ExpListView.setOnGroupClickListener(new OnGroupClickListener() {
 
             @Override
             public boolean onGroupClick(ExpandableListView parent, View v,
@@ -182,25 +155,24 @@ public class MainActivity extends FragmentActivity {
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     @Override
     public void setTitle(CharSequence title) {
-        mTitle = title;
-        getActionBar().setTitle(mTitle);
+        _Title = title;
+        getActionBar().setTitle(_Title);
     }
 
     public void addTask(View newItemButton){
-        Log.d("[> About to add task: ", String.valueOf(editText.getText()));
+        Log.d("Adding task: ", String.valueOf(editText.getText()));
         utils.quickAddTask(tasksDAO, String.valueOf(editText.getText()));
     }
 
     public void deleteTask(View newItemButton){
-        Log.d("[> About to delete all task: ", "");
+        Log.d("Deleting all task from database: ", "");
         tasksDAO.deleteAll();
     }
 
 
     public void getAllTasks(View newItemButton){
-        Log.d("[> About to get all task: ", "");
         List<Task> childItemTitles = tasksDAO.getAllTasks();
-        Log.i("[> All rows of the DB: ", childItemTitles.toString());
+        Log.i("All tasks in DB: ", childItemTitles.toString());
     }
 
 
