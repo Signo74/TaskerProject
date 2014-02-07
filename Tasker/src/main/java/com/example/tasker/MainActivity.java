@@ -84,6 +84,8 @@ public class MainActivity
         getActionBar().setHomeButtonEnabled(true);
         //Main list view
         populateListView();
+        _ExpListAdapter = new ExpandableListAdapter(this, groups);
+        _ExpListView.setAdapter(_ExpListAdapter);
     }
 
     private void populateListView() {
@@ -97,9 +99,9 @@ public class MainActivity
                 Log.d("Adding child: ", task.getTitle());
                 group.getChildren().add(task.getTitle());
             }
+            groups.append(groups.size(), group);
         }
-        _ExpListAdapter = new ExpandableListAdapter(this, groups);
-        _ExpListView.setAdapter(_ExpListAdapter);
+        Log.d("The sparse array of groups: ", groups.toString());
     }
 
     @Override
