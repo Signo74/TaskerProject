@@ -7,6 +7,7 @@ package com.example.tasker;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Typeface;
+import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -45,18 +46,20 @@ public class ExpandableListAdapter
 
     public View getChildView(int groupPosition, final int childPosition, boolean isLastChild, View convertView, ViewGroup parent){
         final String children = (String) getChild(groupPosition, childPosition);
+        Log.d("Children String: ", children);
         TextView text = null;
 
         if (convertView == null) {
            convertView = inflater.inflate(R.layout.list_item, null);
         }
 
-        text = (TextView) convertView.findViewById(R.id.lblListHeader);
+        text = (TextView) convertView.findViewById(R.id.lblListItem);
         text.setText(children);
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(activity, children, Toast.LENGTH_SHORT).show();
+                Toast.makeText(activity, children,
+                        Toast.LENGTH_SHORT).show();
             }
         });
         return convertView;

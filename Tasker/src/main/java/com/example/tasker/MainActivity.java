@@ -91,6 +91,7 @@ public class MainActivity
     private void populateListView() {
         _ExpListView = (ExpandableListView) findViewById(R.id.lvExp);
         List<Task> childItemTitles = tasksDAO.getAllTasks();
+        Log.d("List with child items: ", childItemTitles.toString());
         for (String header : getResources().getStringArray(R.array.tasksByDate)) {
             Log.d("Adding group: ", header);
             ExpandableListGroup group = new ExpandableListGroup(header);
