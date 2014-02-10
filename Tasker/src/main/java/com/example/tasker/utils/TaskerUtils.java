@@ -1,6 +1,7 @@
 package com.example.tasker.utils;
 
 import android.util.Log;
+import android.view.View;
 import android.widget.ArrayAdapter;
 
 import com.example.tasker.R;
@@ -20,30 +21,21 @@ public class TaskerUtils {
     public void TaskerUtils() {
     }
 
-    public List<String> populateHeader(List<String> mListDataHeader, String headerItems[]) {
-        if (headerItems == null || headerItems.length == 0) {
-            return null;
-        }
-        try {
-            String childItems[];
-            if (mListDataHeader == null) {
-                mListDataHeader = new ArrayList<String>();
-            } else {
-                mListDataHeader.clear();
-            }
-
-            for (int i = 0; i < headerItems.length; i++) {
-                mListDataHeader.add(headerItems[i]);
-            }
-            return mListDataHeader;
-        } catch (Exception e) {
-            //TODO: print out the exception.
-            return null;
-        }
-    }
-
     public void quickAddTask(TasksDAO dao, String title){
-        Log.i("[> title should be: ", title);
+        Log.i("[> Quick adding task: ", title);
         Task task = dao.insertTask(title, 0, "", "", "", "Today", "", "", false);
     }
+
+    public void deleteAllTasks(TasksDAO dao){
+        Log.d("[> Deleting all task from database: ", "");
+        dao.deleteAll();
+    }
+
+    public List<Task> getAllTasks(TasksDAO dao){
+        List<Task> childItemTitles = dao.getAllTasks();
+        Log.i("[> All tasks in DB: ", childItemTitles.toString());
+
+        return childItemTitles;
+    }
+
 }

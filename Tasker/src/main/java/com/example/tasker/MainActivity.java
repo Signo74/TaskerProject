@@ -91,18 +91,18 @@ public class MainActivity
     private void populateListView() {
         _ExpListView = (ExpandableListView) findViewById(R.id.lvExp);
         List<Task> childItemTitles = tasksDAO.getAllTasks();
-        Log.d("List with child items: ", childItemTitles.toString());
+        Log.d("[> List with child items: ", childItemTitles.toString());
         for (String header : getResources().getStringArray(R.array.tasksByDate)) {
-            Log.d("Adding group: ", header);
+            Log.d("[> Adding group: ", header);
             ExpandableListGroup group = new ExpandableListGroup(header);
             group.setHeader(header);
             for (Task task : childItemTitles) {
-                Log.d("Adding child: ", task.getTitle());
+                Log.d("[> Adding child: ", task.getTitle());
                 group.getChildren().add(task.getTitle());
             }
             groups.append(groups.size(), group);
         }
-        Log.d("The sparse array of groups: ", groups.toString());
+        Log.d("[> The sparse array of groups: ", groups.toString());
     }
 
     @Override
@@ -163,19 +163,15 @@ public class MainActivity
     }
 
     public void addTask(View newItemButton){
-        Log.d("Adding task: ", String.valueOf(editText.getText()));
         utils.quickAddTask(tasksDAO, String.valueOf(editText.getText()));
     }
 
     public void deleteTask(View newItemButton){
-        Log.d("Deleting all task from database: ", "");
-        tasksDAO.deleteAll();
+        utils.deleteAllTasks(tasksDAO);
     }
 
-
     public void getAllTasks(View newItemButton){
-        List<Task> childItemTitles = tasksDAO.getAllTasks();
-        Log.i("All tasks in DB: ", childItemTitles.toString());
+        List<Task> childItemTitles = utils.getAllTasks(tasksDAO);
     }
 
 

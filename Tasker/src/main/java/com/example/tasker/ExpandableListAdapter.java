@@ -46,7 +46,7 @@ public class ExpandableListAdapter
 
     public View getChildView(int groupPosition, final int childPosition, boolean isLastChild, View convertView, ViewGroup parent){
         final String children = (String) getChild(groupPosition, childPosition);
-        Log.d("Children String: ", children);
+        Log.d("[> Children String: ", children);
         TextView text = null;
 
         if (convertView == null) {
@@ -101,9 +101,11 @@ public class ExpandableListAdapter
         if (convertView == null) {
             convertView = inflater.inflate(R.layout.list_group, null);
         }
+
         ExpandableListGroup group = (ExpandableListGroup) getGroup(groupPosition);
-        ((CheckedTextView) convertView).setText(group.getHeader());
-        ((CheckedTextView) convertView).setChecked(isExpanded);
+        CheckedTextView tv = (CheckedTextView) convertView.findViewById(R.id.lblListItem);
+        tv.setText(group.getHeader());
+        tv.setChecked(isExpanded);
         return convertView;
     }
 
