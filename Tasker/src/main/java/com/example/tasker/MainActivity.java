@@ -98,7 +98,9 @@ public class MainActivity
             group.setHeader(header);
             for (Task task : childItemTitles) {
                 Log.d("[> Adding child: ", task.getTitle());
-                group.getChildren().add(task.getTitle());
+                if (task.getParent() == group.getHeader()) {
+                    group.getChildren().add(task.getTitle());
+                }
             }
             groups.append(groups.size(), group);
         }

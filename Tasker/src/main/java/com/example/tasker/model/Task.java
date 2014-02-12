@@ -14,6 +14,7 @@ public class Task {
     private String description;
     private String image;
     private String location;
+    private String parent;
     private Date dueDate;
     private Date repeatDate;
     private int repeatDay;
@@ -70,6 +71,14 @@ public class Task {
 
     public void setLocation(String location) {
         this.location = location;
+    }
+
+    public String getParent() {
+        return parent;
+    }
+
+    public void setParent(String parent) {
+        this.parent = parent;
     }
 
     public Date getDueDate() {
