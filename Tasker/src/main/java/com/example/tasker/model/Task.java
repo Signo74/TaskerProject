@@ -19,11 +19,30 @@ public class Task {
     private Date repeatDate;
     private int repeatDay;
     private int priority;
-    private Boolean done;
+    private boolean done;
     private ArrayList<String> comments;
-    private ArrayList<Task> subTasks;
     private SharingSettings shareSettings;
     private CustomizationSettings customizationSettings;
+
+    public Task() {}
+
+    public Task(Long id, int type, String title, String description, String image, String location, String parent, Date dueDate, Date repeatDate, int repeatDay, int priority, boolean done, ArrayList<String> comments, ArrayList<Task> subTasks, SharingSettings shareSettings, CustomizationSettings customizationSettings) {
+        this.id = id;
+        this.type = type;
+        this.title = title;
+        this.description = description;
+        this.image = image;
+        this.location = location;
+        this.parent = parent;
+        this.dueDate = dueDate;
+        this.repeatDate = repeatDate;
+        this.repeatDay = repeatDay;
+        this.priority = priority;
+        this.done = done;
+        this.comments = comments;
+        this.shareSettings = shareSettings;
+        this.customizationSettings = customizationSettings;
+    }
 
     public Long getId() {
         return id;
@@ -113,11 +132,11 @@ public class Task {
         this.priority = priority;
     }
 
-    public Boolean getDone() {
+    public boolean isDone() {
         return done;
     }
 
-    public void setDone(Boolean done) {
+    public void setDone(boolean done) {
         this.done = done;
     }
 
@@ -127,14 +146,6 @@ public class Task {
 
     public void setComments(ArrayList<String> comments) {
         this.comments = comments;
-    }
-
-    public ArrayList<Task> getSubTasks() {
-        return subTasks;
-    }
-
-    public void setSubTasks(ArrayList<Task> subTasks) {
-        this.subTasks = subTasks;
     }
 
     public SharingSettings getShareSettings() {
@@ -153,4 +164,25 @@ public class Task {
         this.customizationSettings = customizationSettings;
     }
 
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("Task{");
+        sb.append("id=").append(id);
+        sb.append(", type=").append(type);
+        sb.append(", title='").append(title).append('\'');
+        sb.append(", description='").append(description).append('\'');
+        sb.append(", image='").append(image).append('\'');
+        sb.append(", location='").append(location).append('\'');
+        sb.append(", parent='").append(parent).append('\'');
+        sb.append(", dueDate=").append(dueDate);
+        sb.append(", repeatDate=").append(repeatDate);
+        sb.append(", repeatDay=").append(repeatDay);
+        sb.append(", priority=").append(priority);
+        sb.append(", done=").append(done);
+        sb.append(", comments=").append(comments);
+        sb.append(", shareSettings=").append(shareSettings);
+        sb.append(", customizationSettings=").append(customizationSettings);
+        sb.append('}');
+        return sb.toString();
+    }
 }

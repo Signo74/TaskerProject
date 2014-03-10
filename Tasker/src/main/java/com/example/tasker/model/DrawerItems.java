@@ -9,6 +9,12 @@ public class DrawerItems {
     //Shows whether it is a taskByDate, taskByType, List or Project.
     private String itemType;
 
+    public DrawerItems(Long id, String title, String itemType) {
+        this.id = id;
+        this.title = title;
+        this.itemType = itemType;
+    }
+
     public Long getId() {
         return id;
     }

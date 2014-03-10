@@ -16,13 +16,17 @@ public class TasksDBHelper extends SQLiteOpenHelper {
     public static final String TITLE_COLUMN = "title";
     public static final String TYPE_COLUMN = "type";
     public static final String DESCRIPTION_COLUMN = "description";
+    public static final String PARENT_COLUMN = "parent";
     public static final String IMAGE_COLUMN = "image";
     public static final String LOCATION_COLUMN = "location";
     public static final String DUE_DATE_COLUMN = "duedate";
     public static final String REPEAT_DATE_COLUMN = "repeatdate";
     public static final String REPEAT_DAYS_COLUMN = "repeatdays";
     public static final String DONE_COLUMN = "done";
+    public static final String PRIORITY_COLUMN = "priority";
     public static final String COMMENTS_COLUMN = "comments";
+    public static final String SHARING_SETTINGS_COLUMN = "sharesettings";
+    public static final String CUSTOMIZATION_SETTINGS_COLUMN = "customizationSettings";
 
     //TODO: Modify initial creation string to insert all necessary fields.
     private static final String DATABASE_CREATE = "create table " + TABLE_NAME + "("
@@ -30,13 +34,17 @@ public class TasksDBHelper extends SQLiteOpenHelper {
             + TITLE_COLUMN + " text not null, "
             + TYPE_COLUMN + " integer, "
             + DESCRIPTION_COLUMN + " text, "
+            + PARENT_COLUMN + " text, "
             + IMAGE_COLUMN + " text, "
             + LOCATION_COLUMN + " text, "
             + DUE_DATE_COLUMN + " text, "
             + REPEAT_DATE_COLUMN + " text, "
             + REPEAT_DAYS_COLUMN + " text, "
             + DONE_COLUMN + " integer, "
+            + PRIORITY_COLUMN + " integer, "
             + COMMENTS_COLUMN + " text"
+            + SHARING_SETTINGS_COLUMN + " text, "
+            + CUSTOMIZATION_SETTINGS_COLUMN + " text"
             + ");";
 
     public TasksDBHelper(Context context) {
