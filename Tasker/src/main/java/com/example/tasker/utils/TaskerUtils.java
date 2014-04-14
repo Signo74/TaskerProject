@@ -23,7 +23,7 @@ public class TaskerUtils {
 
     public void quickAddTask(TasksDAO dao, String title){
         Log.i("[> Quick adding task: ", title);
-        Task task = dao.insertTask(title, 0, "", "", "", "Today", "", "", false);
+        Task task = dao.insertTask();
     }
 
     public void deleteAllTasks(TasksDAO dao){

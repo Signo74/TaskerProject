@@ -7,8 +7,8 @@
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
         <option name="modules">
           <set>
-            <option value="$PROJECT_DIR$" />
-            <option value="$PROJECT_DIR$/Tasker" />
+            <option value="C:\Users\victorm\AndroidStudioProjects\TaskerProject" />
+            <option value="C:\Users\victorm\AndroidStudioProjects\TaskerProject\Tasker" />
           </set>
         </option>
       </GradleProjectSettings>
