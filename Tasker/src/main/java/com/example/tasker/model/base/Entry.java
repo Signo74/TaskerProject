@@ -1,8 +1,8 @@
-package com.example.tasker.model;
+package com.example.tasker.model.base;
 
 /**
  * Created by victorm on 4/14/2014.
- * @type - used to identify the type of entry
+ * @type - used to identify the type of entry. See @EtryTypes.
  * @id - unique Id as defined by the row in DB.
  * @title - the title of the entry
  * @content - the content of the entry
@@ -10,22 +10,25 @@ package com.example.tasker.model;
  */
 public class Entry {
 
-    private Integer id;
+    private Long id;
     private Integer type;
     private String title;
     private String content;
     private Long parent;
 
     public Entry(Integer type, String title, String content, Long parent) {
-        this.id = id;
         this.type = type;
         this.title = title;
         this.content = content;
         this.parent = parent;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public Integer getType() {

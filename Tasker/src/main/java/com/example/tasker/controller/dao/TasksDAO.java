@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import com.example.tasker.model.Comment;
 import com.example.tasker.model.CustomizationSettings;
 import com.example.tasker.model.SharingSettings;
 import com.example.tasker.model.Task;
@@ -36,54 +37,37 @@ public class TasksDAO {
         dbHelper.close();
     }
 
-    /**
-     *
-     * @param type
-     * @param title
-     * @param description
-     * @param image
-     * @param location
-     * @param parent
-     * @param dueDate
-     * @param repeatDate
-     * @param repeatDays
-     * @param priority
-     * @param done
-     * @param comments
-     * @param shareSettings
-     * @param customizationSettings
-     * @return
-     */
-    public Task insertTask(int type, String title, String description, String image, String location, String parent, Date dueDate, Date repeatDate, int repeatDays, int priority, boolean done, ArrayList<String> comments, SharingSettings shareSettings, CustomizationSettings customizationSettings) {
+    public Task insertTask(int type, String title, String content, Long parent, String image, String location, Date repeatDate, int repeatDays, Date dueDate, int priority, boolean done, List<Comment> comments) {
         ContentValues values = new ContentValues();
-        Task newTask = new Task();
-        values.put(dbHelper.TITLE_COLUMN, title);
         values.put(dbHelper.TYPE_COLUMN, type);
-        values.put(dbHelper.DESCRIPTION_COLUMN, description);
+        values.put(dbHelper.TITLE_COLUMN, title);
+        values.put(dbHelper.DESCRIPTION_COLUMN, content);
+        values.put(dbHelper.PARENT_COLUMN, parent);
         values.put(dbHelper.IMAGE_COLUMN, image);
         values.put(dbHelper.LOCATION_COLUMN, location);
-        values.put(dbHelper.PARENT_COLUMN, parent);
-        values.put(dbHelper.DUE_DATE_COLUMN, dueDate.getTime());
         values.put(dbHelper.REPEAT_DATE_COLUMN, repeatDate.getTime());
         values.put(dbHelper.REPEAT_DAYS_COLUMN, repeatDays);
+        values.put(dbHelper.DUE_DATE_COLUMN, dueDate.getTime());
         values.put(dbHelper.PRIORITY_COLUMN, priority);
         values.put(dbHelper.DONE_COLUMN, done);
         values.put(dbHelper.COMMENTS_COLUMN, comments.toString());
-        values.put(dbHelper.SHARING_SETTINGS_COLUMN, shareSettings.toString());
-        values.put(dbHelper.CUSTOMIZATION_SETTINGS_COLUMN, customizationSettings.toString());
         Log.i("[> Values for inserting a new task entry: ", String.valueOf(values.valueSet()));
         database.beginTransaction();
+
         try {
             long insertID = database.insert(dbHelper.TABLE_NAME, null, values);
             Cursor cursor = database.query(dbHelper.TABLE_NAME, null, dbHelper.ID_COLUMN + " = " + insertID, null, null, null, null);
             cursor.moveToFirst();
-            newTask = cursorToTask(cursor);
             cursor.close();
             database.setTransactionSuccessful();
+
+            Task newTask = new Task(title, content, parent, image, location, repeatDate, repeatDays, dueDate, priority, done, comments);
+            newTask.setId(insertID);
+
+            return newTask;
         } finally {
             database.endTransaction();
         }
-        return newTask;
     }
 
     public boolean updateTaskById(Task task) {
@@ -91,7 +75,7 @@ public class TasksDAO {
         int updateCount = 0;
         values.put(dbHelper.TITLE_COLUMN, task.getTitle());
         values.put(dbHelper.TYPE_COLUMN, task.getType());
-        values.put(dbHelper.DESCRIPTION_COLUMN, task.getDescription());
+        values.put(dbHelper.DESCRIPTION_COLUMN, task.getContent());
         values.put(dbHelper.IMAGE_COLUMN, task.getImage());
         values.put(dbHelper.LOCATION_COLUMN, task.getLocation());
         values.put(dbHelper.PARENT_COLUMN, task.getParent());
@@ -101,8 +85,6 @@ public class TasksDAO {
         values.put(dbHelper.PRIORITY_COLUMN, task.getPriority());
         values.put(dbHelper.DONE_COLUMN, task.isDone());
         values.put(dbHelper.COMMENTS_COLUMN, task.getComments().toString());
-        values.put(dbHelper.SHARING_SETTINGS_COLUMN, task.getShareSettings().toString());
-        values.put(dbHelper.CUSTOMIZATION_SETTINGS_COLUMN, task.getCustomizationSettings().toString());
         Log.i("[> Values for updating existing task entry: ", String.valueOf(values.valueSet()));
 
         database.beginTransaction();
@@ -127,7 +109,6 @@ public class TasksDAO {
                 ContentValues values = new ContentValues();
                 values.put(dbHelper.TITLE_COLUMN, task.getTitle());
                 values.put(dbHelper.TYPE_COLUMN, task.getType());
-                values.put(dbHelper.DESCRIPTION_COLUMN, task.getDescription());
                 values.put(dbHelper.IMAGE_COLUMN, task.getImage());
                 values.put(dbHelper.LOCATION_COLUMN, task.getLocation());
                 values.put(dbHelper.PARENT_COLUMN, task.getParent());
@@ -137,8 +118,6 @@ public class TasksDAO {
                 values.put(dbHelper.PRIORITY_COLUMN, task.getPriority());
                 values.put(dbHelper.DONE_COLUMN, task.isDone());
                 values.put(dbHelper.COMMENTS_COLUMN, task.getComments().toString());
-                values.put(dbHelper.SHARING_SETTINGS_COLUMN, task.getShareSettings().toString());
-                values.put(dbHelper.CUSTOMIZATION_SETTINGS_COLUMN, task.getCustomizationSettings().toString());
                 Log.i("[> Values for updating existing task entry: ", String.valueOf(values.valueSet()));
                 Log.i("[> Updating task entry: ", task.getId().toString());
                 updateCount += database.update(dbHelper.TABLE_NAME, values, dbHelper.ID_COLUMN + " = " + task.getId(), null);
@@ -222,11 +201,41 @@ public class TasksDAO {
     }
 
     private Task cursorToTask(Cursor cursor) {
-        Task task = new Task();
-        task.setId(cursor.getLong(0));
-        task.setTitle(cursor.getString(1));
+
+        String title = cursor.getString(0);
+        String content = cursor.getString(3);
+        Long parent = cursor.getLong(4);
+        String image = cursor.getString(5);
+        String location = cursor.getString(6);
+        Date repeatDate = new Date(cursor.getLong(7));
+        Integer repeatDays = cursor.getInt(8);
+        Date dueDate = new Date(cursor.getLong(9));
+        Integer priority = cursor.getInt(10);
+        Boolean done = false;
+        if (cursor.getInt(11) == 1) {
+            done = true;
+        }
+        String[] tempComments = cursor.getString(12).split("Comment");
+        List<Comment> comments = new ArrayList<Comment>();
+        for (String comment : tempComments) {
+            comment = comment.replace("{", "");
+            comment = comment.replace("}", "");
+            comment = comment.replace("'", "");
+            String[] params = comment.split(",");
+            String author = params[0].substring(params[0].indexOf("="), params[0].length());
+            String date = params[1].substring(params[1].indexOf("="), params[1].length());
+            String commentTitle = params[2].substring(params[2].indexOf("="), params[2].length());
+            String commentContent = params[3].substring(params[3].indexOf("="), params[3].length());
+            Long commentParent = Long.getLong(params[4].substring(params[4].indexOf("="), params[4].length()));
+
+            comments.add(new Comment(commentTitle, commentContent, commentParent, author, date));
+        }
+
+        Task newTask = new Task(title, content, parent, image, location, repeatDate, repeatDays, dueDate, priority, done, comments);
+        newTask.setId(Long.valueOf(cursor.getPosition()));
+
         //TODO: populate all task fields
-        Log.i("[> Creating new task object with title: ", task.getTitle());
-        return task;
+        Log.i("[> Creating new task object with title: ", newTask.getTitle());
+        return newTask;
     }
 }

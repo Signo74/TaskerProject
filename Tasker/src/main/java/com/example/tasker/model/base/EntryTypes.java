@@ -1,4 +1,4 @@
-package com.example.tasker.model;
+package com.example.tasker.model.base;
 
 /**
  * Created by victorm on 4/14/2014.
@@ -10,10 +10,16 @@ public enum EntryTypes {
     COMMENT(3),
     IMAGE(4),
     TODO_LIST(5),
+    SETTINGS_ITEM(6),
 
-    //100 - 200 task sub entries
-    SUB_TASK(101),
-    TODO(102);
+
+    //Settings item types -> 100+
+    SETTINGS_ITEM_CHECKBOX(100),
+    SETTINGS_ITEM_RADIO(101),
+    SETTINGS_ITEM_COMBO(102),
+    SETTINGS_ITEM_BUTTON(103),
+    SETTINGS_ITEM_DIALOG(104),
+    SETTINGS_ITEM_STRING_VALUE(105);
 
     private int entryId;
 

@@ -1,10 +1,13 @@
 package com.example.tasker.model;
 
+import com.example.tasker.model.base.Entry;
+import com.example.tasker.model.base.EntryTypes;
+
 /**
  * Created by victorm on 4/14/2014.
  */
 public class Comment
-    extends Entry{
+    extends Entry {
 
     private String author;
     private String datePosted;
@@ -41,6 +44,7 @@ public class Comment
         sb.append(super.toString()).append('\'');
         sb.append("author='").append(author).append('\'');
         sb.append(", datePosted='").append(datePosted).append('\'');
+        sb.append(super.toString());
         sb.append('}');
         return sb.toString();
     }

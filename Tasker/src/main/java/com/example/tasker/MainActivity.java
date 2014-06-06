@@ -98,7 +98,7 @@ public class MainActivity
             group.setHeader(header);
             for (Task task : childItemTitles) {
                 Log.d("[> Adding child: ", task.getTitle());
-                if (task.getParent() == group.getHeader()) {
+                if (task.getDueDate().toString() == group.getHeader()) {
                     group.getChildren().add(task.getTitle());
                 }
             }
