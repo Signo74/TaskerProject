@@ -7,8 +7,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.example.tasker.model.Comment;
-import com.example.tasker.model.CustomizationSettings;
-import com.example.tasker.model.SharingSettings;
 import com.example.tasker.model.Task;
 import com.example.tasker.controller.dbhelper.TasksDBHelper;
 
@@ -50,8 +48,12 @@ public class TasksDAO {
         values.put(dbHelper.DUE_DATE_COLUMN, dueDate.getTime());
         values.put(dbHelper.PRIORITY_COLUMN, priority);
         values.put(dbHelper.DONE_COLUMN, done);
-        values.put(dbHelper.COMMENTS_COLUMN, comments.toString());
-        Log.i("[> Values for inserting a new task entry: ", String.valueOf(values.valueSet()));
+        if (comments != null ) {
+            values.put(dbHelper.COMMENTS_COLUMN, comments.toString());
+        } else {
+            values.put(dbHelper.COMMENTS_COLUMN, "");
+        }
+        Log.d("TasksDAO.insertTask", "These values " + String.valueOf(values.valueSet()) + " will be inserted in the new entry.");
         database.beginTransaction();
 
         try {
@@ -85,11 +87,10 @@ public class TasksDAO {
         values.put(dbHelper.PRIORITY_COLUMN, task.getPriority());
         values.put(dbHelper.DONE_COLUMN, task.isDone());
         values.put(dbHelper.COMMENTS_COLUMN, task.getComments().toString());
-        Log.i("[> Values for updating existing task entry: ", String.valueOf(values.valueSet()));
-
+        Log.d("TasksDAO.updateTaskById", "Values " + values.valueSet() + " for updating existing entry with Id: " + task.getId());
         database.beginTransaction();
         try {
-            Log.i("[> Updating task entry: ", task.getId().toString());
+            Log.d("TasksDAO.updateTaskById", "Updating task entry with Id "+ task.getId());
             updateCount = database.update(dbHelper.TABLE_NAME, values, dbHelper.ID_COLUMN + " = " + task.getId(), null);
             database.setTransactionSuccessful();
         } finally {
@@ -118,8 +119,7 @@ public class TasksDAO {
                 values.put(dbHelper.PRIORITY_COLUMN, task.getPriority());
                 values.put(dbHelper.DONE_COLUMN, task.isDone());
                 values.put(dbHelper.COMMENTS_COLUMN, task.getComments().toString());
-                Log.i("[> Values for updating existing task entry: ", String.valueOf(values.valueSet()));
-                Log.i("[> Updating task entry: ", task.getId().toString());
+                Log.d("TasksDAO.updateListOfTasksById", "Updating task entry with id " + task.getId() +" with values {}" + values.valueSet());
                 updateCount += database.update(dbHelper.TABLE_NAME, values, dbHelper.ID_COLUMN + " = " + task.getId(), null);
                 database.setTransactionSuccessful();
             }
@@ -132,14 +132,19 @@ public class TasksDAO {
 
     public List<Task> getAllTasks() {
         List<Task> allTasks = new ArrayList<Task>();
-        Cursor cursor = database.query(dbHelper.TABLE_NAME, null, null, null, null, null, null);
-        cursor.moveToFirst();
-        while (!cursor.isAfterLast()) {
-            Task task = cursorToTask(cursor);
-            allTasks.add(task);
-            cursor.moveToNext();
+        try {
+            Cursor cursor = database.query(dbHelper.TABLE_NAME, null, null, null, null, null, null);
+            cursor.moveToFirst();
+            while (!cursor.isAfterLast()) {
+                Task task = cursorToTask(cursor);
+                allTasks.add(task);
+                cursor.moveToNext();
+                cursor.close();
+            }
+        } catch (Exception ex) {
+            Log.e("Tasls.DAO.getAllTasks", "Error " + ex +" was thrown while processing all tasks.");
+            return null;
         }
-        cursor.close();
         return allTasks;
     }
 
@@ -201,41 +206,47 @@ public class TasksDAO {
     }
 
     private Task cursorToTask(Cursor cursor) {
+        try {
+            String title = cursor.getString(0);
+            String content = cursor.getString(3);
+            Long parent = cursor.getLong(4);
+            String image = cursor.getString(5);
+            String location = cursor.getString(6);
+            Date repeatDate = new Date(cursor.getLong(7));
+            Integer repeatDays = cursor.getInt(8);
+            Date dueDate = new Date(cursor.getLong(9));
+            Integer priority = cursor.getInt(10);
+            Boolean done = false;
+            if (cursor.getInt(11) == 1) {
+                done = true;
+            }
 
-        String title = cursor.getString(0);
-        String content = cursor.getString(3);
-        Long parent = cursor.getLong(4);
-        String image = cursor.getString(5);
-        String location = cursor.getString(6);
-        Date repeatDate = new Date(cursor.getLong(7));
-        Integer repeatDays = cursor.getInt(8);
-        Date dueDate = new Date(cursor.getLong(9));
-        Integer priority = cursor.getInt(10);
-        Boolean done = false;
-        if (cursor.getInt(11) == 1) {
-            done = true;
+            List<Comment> comments = new ArrayList<Comment>();
+            if (cursor.getString(12).indexOf("Comment") > -1) {
+                String[] tempComments = cursor.getString(12).split("Comment");
+                for (String comment : tempComments) {
+                    comment = comment.replace("{", "");
+                    comment = comment.replace("}", "");
+                    comment = comment.replace("'", "");
+                    String[] params = comment.split(",");
+                    String author = params[0].substring(params[0].indexOf("="), params[0].length());
+                    String date = params[1].substring(params[1].indexOf("="), params[1].length());
+                    String commentTitle = params[2].substring(params[2].indexOf("="), params[2].length());
+                    String commentContent = params[3].substring(params[3].indexOf("="), params[3].length());
+                    Long commentParent = Long.getLong(params[4].substring(params[4].indexOf("="), params[4].length()));
+
+                    comments.add(new Comment(commentTitle, commentContent, commentParent, author, date));
+                }
+            }
+
+            Task newTask = new Task(title, content, parent, image, location, repeatDate, repeatDays, dueDate, priority, done, comments);
+            newTask.setId(Long.valueOf(cursor.getPosition()));
+
+            Log.d("TasksDAO.cursorToTask","Creating new task with id " + newTask.getId() + ". Task: " + newTask);
+            return newTask;
+        } catch (Exception ex) {
+            Log.e("TasksDAO.cursorToTask", "Exception " + ex +" thrown while creating new task");
+            return null;
         }
-        String[] tempComments = cursor.getString(12).split("Comment");
-        List<Comment> comments = new ArrayList<Comment>();
-        for (String comment : tempComments) {
-            comment = comment.replace("{", "");
-            comment = comment.replace("}", "");
-            comment = comment.replace("'", "");
-            String[] params = comment.split(",");
-            String author = params[0].substring(params[0].indexOf("="), params[0].length());
-            String date = params[1].substring(params[1].indexOf("="), params[1].length());
-            String commentTitle = params[2].substring(params[2].indexOf("="), params[2].length());
-            String commentContent = params[3].substring(params[3].indexOf("="), params[3].length());
-            Long commentParent = Long.getLong(params[4].substring(params[4].indexOf("="), params[4].length()));
-
-            comments.add(new Comment(commentTitle, commentContent, commentParent, author, date));
-        }
-
-        Task newTask = new Task(title, content, parent, image, location, repeatDate, repeatDays, dueDate, priority, done, comments);
-        newTask.setId(Long.valueOf(cursor.getPosition()));
-
-        //TODO: populate all task fields
-        Log.i("[> Creating new task object with title: ", newTask.getTitle());
-        return newTask;
     }
 }

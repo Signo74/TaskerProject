@@ -91,20 +91,20 @@ public class MainActivity
     private void populateListView() {
         _ExpListView = (ExpandableListView) findViewById(R.id.lvExp);
         List<Task> childItemTitles = tasksDAO.getAllTasks();
-        Log.d("[> List with child items: ", childItemTitles.toString());
+        Log.d("Main.populateListView", "List with child items" + childItemTitles);
         for (String header : getResources().getStringArray(R.array.tasksByDate)) {
-            Log.d("[> Adding group: ", header);
+            Log.d("Main.populateListView","Adding group with header " + header);
             ExpandableListGroup group = new ExpandableListGroup(header);
             group.setHeader(header);
             for (Task task : childItemTitles) {
-                Log.d("[> Adding child: ", task.getTitle());
+                Log.d("Main.populateListView", "Adding child with title " + task.getTitle());
                 if (task.getDueDate().toString() == group.getHeader()) {
                     group.getChildren().add(task.getTitle());
                 }
             }
             groups.append(groups.size(), group);
         }
-        Log.d("[> The sparse array of groups: ", groups.toString());
+        Log.d("Main.populateListView", "The sparse array of groups " + groups);
     }
 
     @Override

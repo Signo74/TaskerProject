@@ -26,18 +26,19 @@ public class TaskerUtils {
     }
 
     public void quickAddTask(TasksDAO dao, String title){
-        Log.i("[> Quick adding task: ", title);
-        Task task = dao.insertTask(EntryTypes.TASK.getEntryId(), title, "", 0l, "", "",  new Date(), 7, null , 0, false, null);
+        Log.d("TaskerUtils.quickAddTask","Adding task with title: " + title);
+        Date currentDate = new Date();
+        Task task = dao.insertTask(EntryTypes.TASK.getEntryId(), title, "", 0l, "", "",  currentDate, 7, currentDate, 0, false, null);
     }
 
     public void deleteAllTasks(TasksDAO dao){
-        Log.d("[> Deleting all task from database: ", "");
+        Log.d("TaskerUtils.deleteAllTasks","Deleting all tasks from Data base");
         dao.deleteAll();
     }
 
     public List<Task> getAllTasks(TasksDAO dao){
         List<Task> childItemTitles = dao.getAllTasks();
-        Log.i("[> All tasks in DB: ", childItemTitles.toString());
+        Log.d("TaskerUtils.getAllTasks","All tasks in DB: " + childItemTitles);
 
         return childItemTitles;
     }
