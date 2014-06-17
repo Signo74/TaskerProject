@@ -29,23 +29,27 @@ import com.example.tasker.model.Task;
 import com.example.tasker.utils.TaskerUtils;
 
 import java.sql.SQLException;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
 public class MainActivity
         extends FragmentActivity {
-    ExpandableListAdapter _ExpListAdapter;
-    ExpandableListView _ExpListView;
-    private String[] _DrawerItems;
-    private ListView _DrawerList;
-    private DrawerLayout _DrawerLayout;
-    private ActionBarDrawerToggle _DrawerToggle;
-    private CharSequence _DrawerTitle = "Drawer Title";
-    private CharSequence _Title = "Title";
+    ExpandableListAdapter expandableListAdapter;
+    ExpandableListView expandableListView;
+    private String[] drawerItems;
+    private ListView drawerList;
+    private DrawerLayout drawerLayout;
+    private ActionBarDrawerToggle drawerToggle;
+    private CharSequence drawerTitle = "Drawer Title";
+    private CharSequence title = "Title";
     private TaskerUtils utils = new TaskerUtils();
     private TasksDAO tasksDAO;
     private EditText editText;
     private SparseArray<ExpandableListGroup> groups = new SparseArray<ExpandableListGroup>();
+    private Calendar taskCalendar = Calendar.getInstance();
+    private Calendar todayCalendar = Calendar.getInstance();
 
     @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
     @Override
@@ -61,35 +65,37 @@ public class MainActivity
 
         editText = (EditText) findViewById(R.id.etf_new_item);
         //Nav drawer
-        _DrawerItems = getResources().getStringArray(R.array.tasksByDate);
-        _DrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        _DrawerList = (ListView) findViewById(R.id.left_drawer);
-        _DrawerToggle = new ActionBarDrawerToggle(this, _DrawerLayout, R.drawable.ic_drawer, R.string.drawer_open, R.string.drawer_close) {
+        drawerItems = getResources().getStringArray(R.array.tasksByDate);
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawerList = (ListView) findViewById(R.id.left_drawer);
+        drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.drawable.ic_drawer, R.string.drawer_open, R.string.drawer_close) {
 
             public void onDrawerClosed(View view) {
-                getActionBar().setTitle(_Title);
+                getActionBar().setTitle(title);
                 invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
             }
 
             public void onDrawerOpened(View drawerView) {
-                getActionBar().setTitle(_DrawerTitle);
+                getActionBar().setTitle(drawerTitle);
                 invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
             }
         };
 
-        _DrawerList.setAdapter(new ArrayAdapter<String>(this, R.layout.drawer_list_item, _DrawerItems));
-        _DrawerList.setOnItemClickListener(new DrawerItemClickListener());
-        _DrawerLayout.setDrawerListener(_DrawerToggle);
+        drawerList.setAdapter(new ArrayAdapter<String>(this, R.layout.drawer_list_item, drawerItems));
+        drawerList.setOnItemClickListener(new DrawerItemClickListener());
+        drawerLayout.setDrawerListener(drawerToggle);
         getActionBar().setDisplayHomeAsUpEnabled(true);
         getActionBar().setHomeButtonEnabled(true);
         //Main list view
         populateListView();
-        _ExpListAdapter = new ExpandableListAdapter(this, groups);
-        _ExpListView.setAdapter(_ExpListAdapter);
+        expandableListAdapter = new ExpandableListAdapter(this, groups);
+        expandableListView.setAdapter(expandableListAdapter);
+
+        todayCalendar.setTime(new Date());
     }
 
     private void populateListView() {
-        _ExpListView = (ExpandableListView) findViewById(R.id.lvExp);
+        expandableListView = (ExpandableListView) findViewById(R.id.lvExp);
         List<Task> childItemTitles = tasksDAO.getAllTasks();
         Log.d("Main.populateListView", "List with child items" + childItemTitles);
         for (String header : getResources().getStringArray(R.array.tasksByDate)) {
@@ -97,8 +103,11 @@ public class MainActivity
             ExpandableListGroup group = new ExpandableListGroup(header);
             group.setHeader(header);
             for (Task task : childItemTitles) {
-                Log.d("Main.populateListView", "Adding child with title " + task.getTitle());
+                taskCalendar.setTime(task.getDueDate());
+                //This is how you can get Day and Month.
+                //if (taskCalendar.DAY_OF_MONTH == todayCalendar.DAY_OF_MONTH && taskCalendar.MONTH == todayCalendar.MONTH) {}
                 if (task.getDueDate().toString() == group.getHeader()) {
+                    Log.d("Main.populateListView", "Adding task:" + task.toString());
                     group.getChildren().add(task.getTitle());
                 }
             }
@@ -110,19 +119,19 @@ public class MainActivity
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        _DrawerToggle.syncState();
+        drawerToggle.syncState();
     }
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        _DrawerToggle.onConfigurationChanged(newConfig);
+        drawerToggle.onConfigurationChanged(newConfig);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         //TODO: should implement propper UP vs Back logic
-        if (_DrawerToggle.onOptionsItemSelected(item)) {
+        if (drawerToggle.onOptionsItemSelected(item)) {
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -130,7 +139,7 @@ public class MainActivity
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        boolean drawerOpen = _DrawerLayout.isDrawerOpen(_DrawerList);
+        boolean drawerOpen = drawerLayout.isDrawerOpen(drawerList);
         //menu.findItem(R.id.action_share).setVisible(!drawerOpen);
         return super.onPrepareOptionsMenu(menu);
     }
@@ -146,7 +155,7 @@ public class MainActivity
      * Swaps fragments in the main content view
      */
     private void selectItem(int position) {
-        _ExpListView.setOnGroupClickListener(new OnGroupClickListener() {
+        expandableListView.setOnGroupClickListener(new OnGroupClickListener() {
 
             @Override
             public boolean onGroupClick(ExpandableListView parent, View v,
@@ -160,8 +169,8 @@ public class MainActivity
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     @Override
     public void setTitle(CharSequence title) {
-        _Title = title;
-        getActionBar().setTitle(_Title);
+        this.title = title;
+        getActionBar().setTitle(this.title);
     }
 
     public void addTask(View newItemButton){

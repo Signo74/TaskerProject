@@ -37,17 +37,21 @@ public class TasksDAO {
 
     public Task insertTask(int type, String title, String content, Long parent, String image, String location, Date repeatDate, int repeatDays, Date dueDate, int priority, boolean done, List<Comment> comments) {
         ContentValues values = new ContentValues();
-        values.put(dbHelper.TYPE_COLUMN, type);
         values.put(dbHelper.TITLE_COLUMN, title);
+        values.put(dbHelper.TYPE_COLUMN, type);
         values.put(dbHelper.DESCRIPTION_COLUMN, content);
         values.put(dbHelper.PARENT_COLUMN, parent);
         values.put(dbHelper.IMAGE_COLUMN, image);
         values.put(dbHelper.LOCATION_COLUMN, location);
-        values.put(dbHelper.REPEAT_DATE_COLUMN, repeatDate.getTime());
-        values.put(dbHelper.REPEAT_DAYS_COLUMN, repeatDays);
         values.put(dbHelper.DUE_DATE_COLUMN, dueDate.getTime());
-        values.put(dbHelper.PRIORITY_COLUMN, priority);
+        if (repeatDate != null) {
+            values.put(dbHelper.REPEAT_DATE_COLUMN, repeatDate.getTime());
+        } else {
+            values.put(dbHelper.REPEAT_DATE_COLUMN, 0);
+        }
+        values.put(dbHelper.REPEAT_DAYS_COLUMN, repeatDays);
         values.put(dbHelper.DONE_COLUMN, done);
+        values.put(dbHelper.PRIORITY_COLUMN, priority);
         if (comments != null ) {
             values.put(dbHelper.COMMENTS_COLUMN, comments.toString());
         } else {
@@ -132,18 +136,19 @@ public class TasksDAO {
 
     public List<Task> getAllTasks() {
         List<Task> allTasks = new ArrayList<Task>();
+        Cursor cursor = database.query(dbHelper.TABLE_NAME, null, null, null, null, null, null);
         try {
-            Cursor cursor = database.query(dbHelper.TABLE_NAME, null, null, null, null, null, null);
             cursor.moveToFirst();
             while (!cursor.isAfterLast()) {
                 Task task = cursorToTask(cursor);
                 allTasks.add(task);
                 cursor.moveToNext();
-                cursor.close();
             }
         } catch (Exception ex) {
             Log.e("Tasls.DAO.getAllTasks", "Error " + ex +" was thrown while processing all tasks.");
             return null;
+        } finally {
+            cursor.close();
         }
         return allTasks;
     }
@@ -207,19 +212,21 @@ public class TasksDAO {
 
     private Task cursorToTask(Cursor cursor) {
         try {
-            String title = cursor.getString(0);
+            String title = cursor.getString(1);
+            //Not needed
+            Integer type = cursor.getInt(2);
             String content = cursor.getString(3);
             Long parent = cursor.getLong(4);
             String image = cursor.getString(5);
             String location = cursor.getString(6);
-            Date repeatDate = new Date(cursor.getLong(7));
-            Integer repeatDays = cursor.getInt(8);
-            Date dueDate = new Date(cursor.getLong(9));
-            Integer priority = cursor.getInt(10);
+            Date dueDate = new Date(cursor.getLong(7));
+            Date repeatDate = new Date(cursor.getLong(8));
+            Integer repeatDays = cursor.getInt(9);;
             Boolean done = false;
-            if (cursor.getInt(11) == 1) {
+            if (cursor.getInt(10) == 1) {
                 done = true;
             }
+            Integer priority = cursor.getInt(11);
 
             List<Comment> comments = new ArrayList<Comment>();
             if (cursor.getString(12).indexOf("Comment") > -1) {

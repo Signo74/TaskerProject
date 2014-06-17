@@ -22,6 +22,9 @@
 
     <!-- Task categories by date -->
     <string-array name="tasksByDate">
+        <item>Older</item>
+        <item>This week</item>
+        <item>Yesterday</item>
         <item>Today</item>
         <item>Tommorow</item>
         <item>Someday</item>
