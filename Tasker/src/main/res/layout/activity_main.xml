@@ -32,20 +32,27 @@
                 android:layout_gravity="center"
                 android:layout_weight="0.1"
                 android:onClick="addTask"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/bottom_buttons"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="36dp">
             <Button
                 android:id="@+id/b_delete_item"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Delete"
+                android:text="Delete all"
                 android:layout_gravity="center"
                 android:layout_weight="0.1"
                 android:onClick="deleteTask"/>
 
             <Button
-                android:id="@+id/b_delete_item"
+                android:id="@+id/b_get_items"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Get"
+                android:text="Get all"
                 android:layout_gravity="center"
                 android:layout_weight="0.1"
                 android:onClick="getAllTasks"/>

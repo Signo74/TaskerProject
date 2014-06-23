@@ -181,7 +181,8 @@ public class MainActivity
         utils.deleteAllTasks(tasksDAO);
     }
 
-    public void getAllTasks(View newItemButton){
+    public void getAllTasks(View newItem
+    ){
         List<Task> childItemTitles = utils.getAllTasks(tasksDAO);
     }
 
