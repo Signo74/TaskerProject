@@ -1,8 +1,5 @@
 package com.example.tasker.model.base;
 
-import com.example.tasker.model.base.Entry;
-import com.example.tasker.model.base.EntryTypes;
-
 /**
  * Created by victorm on 4/22/2014.
  */
@@ -16,11 +13,11 @@ public class SettingsItem
     private Boolean isOn;
     private Object itemControlObject;
 
-    SettingsItem (String title, String content, Long parent) {
+    SettingsItem (String title, String content, String parent) {
         super(EntryTypes.SETTINGS_ITEM.getEntryId(),  title, content, parent);
     }
 
-    public SettingsItem(String title, String content, Long parent, Integer itemType, Boolean isOn, Object itemControlObject) {
+    public SettingsItem(String title, String content, String parent, Integer itemType, Boolean isOn, Object itemControlObject) {
         this(title, content, parent);
         this.itemType = itemType;
         this.isOn = isOn;

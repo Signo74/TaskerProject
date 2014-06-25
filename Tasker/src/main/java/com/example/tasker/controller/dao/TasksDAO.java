@@ -35,7 +35,7 @@ public class TasksDAO {
         dbHelper.close();
     }
 
-    public Task insertTask(int type, String title, String content, Long parent, String image, String location, Date repeatDate, int repeatDays, Date dueDate, int priority, boolean done, List<Comment> comments) {
+    public Task insertTask(int type, String title, String content, String parent, String image, String location, Date repeatDate, int repeatDays, Date dueDate, int priority, boolean done, List<Comment> comments) {
         ContentValues values = new ContentValues();
         values.put(dbHelper.TITLE_COLUMN, title);
         values.put(dbHelper.TYPE_COLUMN, type);
@@ -84,7 +84,7 @@ public class TasksDAO {
         values.put(dbHelper.DESCRIPTION_COLUMN, task.getContent());
         values.put(dbHelper.IMAGE_COLUMN, task.getImage());
         values.put(dbHelper.LOCATION_COLUMN, task.getLocation());
-        values.put(dbHelper.PARENT_COLUMN, task.getParent());
+        values.put(dbHelper.PARENT_COLUMN, task.getCategory());
         values.put(dbHelper.DUE_DATE_COLUMN, task.getDueDate().getTime());
         values.put(dbHelper.REPEAT_DATE_COLUMN, task.getRepeatDate().getTime());
         values.put(dbHelper.REPEAT_DAYS_COLUMN, task.getRepeatDay());
@@ -116,7 +116,7 @@ public class TasksDAO {
                 values.put(dbHelper.TYPE_COLUMN, task.getType());
                 values.put(dbHelper.IMAGE_COLUMN, task.getImage());
                 values.put(dbHelper.LOCATION_COLUMN, task.getLocation());
-                values.put(dbHelper.PARENT_COLUMN, task.getParent());
+                values.put(dbHelper.PARENT_COLUMN, task.getCategory());
                 values.put(dbHelper.DUE_DATE_COLUMN, task.getDueDate().getTime());
                 values.put(dbHelper.REPEAT_DATE_COLUMN, task.getRepeatDate().getTime());
                 values.put(dbHelper.REPEAT_DAYS_COLUMN, task.getRepeatDay());
@@ -216,7 +216,7 @@ public class TasksDAO {
             //Not needed
             Integer type = cursor.getInt(2);
             String content = cursor.getString(3);
-            Long parent = cursor.getLong(4);
+            String parent = cursor.getString(4);
             String image = cursor.getString(5);
             String location = cursor.getString(6);
             Date dueDate = new Date(cursor.getLong(7));
@@ -240,7 +240,7 @@ public class TasksDAO {
                     String date = params[1].substring(params[1].indexOf("="), params[1].length());
                     String commentTitle = params[2].substring(params[2].indexOf("="), params[2].length());
                     String commentContent = params[3].substring(params[3].indexOf("="), params[3].length());
-                    Long commentParent = Long.getLong(params[4].substring(params[4].indexOf("="), params[4].length()));
+                    String commentParent = params[4].substring(params[4].indexOf("="), params[4].length());
 
                     comments.add(new Comment(commentTitle, commentContent, commentParent, author, date));
                 }

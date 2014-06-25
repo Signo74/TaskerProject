@@ -12,11 +12,11 @@ public class Comment
     private String author;
     private String datePosted;
 
-    Comment (String title, String content, Long parent) {
+    Comment (String title, String content, String parent) {
         super(EntryTypes.COMMENT.getEntryId(),  title, content, parent);
     }
 
-    public Comment(String title, String content, Long parent, String author, String datePosted) {
+    public Comment(String title, String content, String parent, String author, String datePosted) {
         this(title, content, parent);
         this.author = author;
         this.datePosted = datePosted;

@@ -6,7 +6,7 @@ package com.example.tasker.model.base;
  * @id - unique Id as defined by the row in DB.
  * @title - the title of the entry
  * @content - the content of the entry
- * @parent - the @id of the parent entry if it exists
+ * @category - the @id of the category entry if it exists
  */
 public class Entry {
 
@@ -14,13 +14,13 @@ public class Entry {
     private Integer type;
     private String title;
     private String content;
-    private Long parent;
+    private String category;
 
-    public Entry(Integer type, String title, String content, Long parent) {
+    public Entry(Integer type, String title, String content, String category) {
         this.type = type;
         this.title = title;
         this.content = content;
-        this.parent = parent;
+        this.category = category;
     }
 
     public Long getId() {
@@ -55,12 +55,12 @@ public class Entry {
         this.content = content;
     }
 
-    public Long getParent() {
-        return parent;
+    public String getCategory() {
+        return category;
     }
 
-    public void setParent(Long parent) {
-        this.parent = parent;
+    public void setCategory(String category) {
+        this.category = category;
     }
 
     @Override
@@ -70,7 +70,7 @@ public class Entry {
         sb.append(", type=").append(type);
         sb.append(", title='").append(title).append('\'');
         sb.append(", content='").append(content).append('\'');
-        sb.append(", parent='").append(parent).append('\'');
+        sb.append(", category='").append(category).append('\'');
         sb.append('}');
         return sb.toString();
     }

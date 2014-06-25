@@ -23,13 +23,13 @@ public class Task
     private List<Comment> comments;
 
 
-    Task(String title, String content, Long parent) {
+    Task(String title, String content, String parent) {
         super(EntryTypes.TASK.getEntryId(), title, content, parent);
     }
 
 
 
-    public Task(String title, String content, Long parent, String imageUrl, String location, Date repeatDate, Integer repeatDay, Date dueDate, Integer priority, boolean done, List<Comment> comments) {
+    public Task(String title, String content, String parent, String imageUrl, String location, Date repeatDate, Integer repeatDay, Date dueDate, Integer priority, boolean done, List<Comment> comments) {
         this(title, content, parent);
         this.imageUrl = imageUrl;
         this.location = location;

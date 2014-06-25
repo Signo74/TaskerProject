@@ -94,25 +94,49 @@ public class MainActivity
         todayCalendar.setTime(new Date());
     }
 
+    private boolean searchGroups(String title){
+        for(int i = 0; i < groups.size() ; i++) {
+            if (groups.get(i).getHeader() == title) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private ExpandableListGroup getListGroupByTitle(String title) {
+        for(int i = 0; i < groups.size() ; i++) {
+            if (groups.get(i).getHeader() == title) {
+                return groups.get(i);
+            }
+        }
+        return null;
+    }
+
     private void populateListView() {
         expandableListView = (ExpandableListView) findViewById(R.id.lvExp);
         List<Task> childItemTitles = tasksDAO.getAllTasks();
+        String title = getResources().getStringArray(R.array.tasksByDate)[3];
         Log.d("Main.populateListView", "List with child items" + childItemTitles);
-        for (String header : getResources().getStringArray(R.array.tasksByDate)) {
-            Log.d("Main.populateListView","Adding group with header " + header);
-            ExpandableListGroup group = new ExpandableListGroup(header);
-            group.setHeader(header);
-            for (Task task : childItemTitles) {
-                taskCalendar.setTime(task.getDueDate());
-                //This is how you can get Day and Month.
-                //if (taskCalendar.DAY_OF_MONTH == todayCalendar.DAY_OF_MONTH && taskCalendar.MONTH == todayCalendar.MONTH) {}
-                if (task.getDueDate().toString() == group.getHeader()) {
-                    Log.d("Main.populateListView", "Adding task:" + task.toString());
-                    group.getChildren().add(task.getTitle());
+
+        //This is how you can get Day and Month.
+        //if (taskCalendar.DAY_OF_MONTH == todayCalendar.DAY_OF_MONTH && taskCalendar.MONTH == todayCalendar.MONTH) {}
+        for (Task task : childItemTitles) {
+            Log.d("Main.populateListView", "Adding task:" + task.toString());
+            if (!searchGroups(title)) {
+                Log.d("Main.populateListView", "Adding group:" + title);
+                ExpandableListGroup group = new ExpandableListGroup(title);
+                group.setHeader(title);
+                group.getChildren().add(task.getTitle());
+                groups.append(groups.size(), group);
+            } else {
+                try {
+                    getListGroupByTitle(title).getChildren().add(task.getTitle());
+                } catch (Exception ex){
+                    Log.e("Main.populateListView", "Adding task failed because no such group exists: " + title);
                 }
             }
-            groups.append(groups.size(), group);
         }
+
         Log.d("Main.populateListView", "The sparse array of groups " + groups);
     }
 

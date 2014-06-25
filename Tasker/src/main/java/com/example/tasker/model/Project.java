@@ -15,11 +15,11 @@ public class Project
     private Long duration;
     private Task projectContent;
 
-    Project(String title, String content, Long parent) {
+    Project(String title, String content, String parent) {
         super(EntryTypes.PROJECT.getEntryId(), title, content, parent);
     }
 
-    public Project(Long duration, String title, String content, Long parent, String imageUrl, String location, Date repeatDate, Integer repeatDay, Date dueDate, Integer priority, boolean done, List<Comment> comments) {
+    public Project(Long duration, String title, String content, String parent, String imageUrl, String location, Date repeatDate, Integer repeatDay, Date dueDate, Integer priority, boolean done, List<Comment> comments) {
         this(title, content, parent);
         this.duration = duration;
         this.projectContent = new Task(title, content, parent, imageUrl, location, repeatDate, repeatDay, dueDate, priority, done, comments);

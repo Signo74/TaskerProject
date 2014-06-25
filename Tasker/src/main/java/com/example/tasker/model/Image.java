@@ -12,11 +12,11 @@ public class Image
     private String imageURL;
     private String locationMetadata;
 
-    Image(String title, String content, Long parent) {
+    Image(String title, String content, String parent) {
         super(EntryTypes.IMAGE.getEntryId(), title, content, parent);
     }
 
-    public Image(String title, String content, Long parent, String imageURL, String locationMetadata) {
+    public Image(String title, String content, String parent, String imageURL, String locationMetadata) {
         this(title, content, parent);
         this.imageURL = imageURL;
         this.locationMetadata = locationMetadata;
