@@ -12,6 +12,7 @@ import com.example.tasker.model.Task;
 import com.example.tasker.model.base.EntryTypes;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -22,13 +23,15 @@ import java.util.Random;
  */
 public class TaskerUtils {
 
+    private final static Calendar dueDateCalendar = Calendar.getInstance();
+
     public void TaskerUtils() {
     }
 
     public void quickAddTask(TasksDAO dao, String title){
         Log.d("TaskerUtils.quickAddTask","Adding task with title: " + title);
         Date currentDate = new Date();
-        Task task = dao.insertTask(EntryTypes.TASK.getEntryId(), title, "", "Today", "", "",  null, 7, currentDate, 0, false, null);
+        Task task = dao.insertTask(EntryTypes.TASK.getEntryId(), title, "", "Today", "", "",  null, 7, dueDateCalendar, 0, false, null);
     }
 
     public void deleteAllTasks(TasksDAO dao){

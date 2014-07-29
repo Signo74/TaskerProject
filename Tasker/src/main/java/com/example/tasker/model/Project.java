@@ -3,6 +3,7 @@ package com.example.tasker.model;
 import com.example.tasker.model.base.Entry;
 import com.example.tasker.model.base.EntryTypes;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -12,24 +13,30 @@ import java.util.List;
 public class Project
     extends Entry {
 
-    private Long duration;
+    private long duration;
     private Task projectContent;
 
     Project(String title, String content, String parent) {
         super(EntryTypes.PROJECT.getEntryId(), title, content, parent);
     }
 
-    public Project(Long duration, String title, String content, String parent, String imageUrl, String location, Date repeatDate, Integer repeatDay, Date dueDate, Integer priority, boolean done, List<Comment> comments) {
+    public Project(long duration, String title, String content, String parent, String imageUrl, String location, Date repeatDate, int repeatDay, Calendar dueDate, int priority, boolean done, List<Comment> comments) {
         this(title, content, parent);
         this.duration = duration;
         this.projectContent = new Task(title, content, parent, imageUrl, location, repeatDate, repeatDay, dueDate, priority, done, comments);
     }
 
-    public Long getDuration() {
+    public Project(long duration, String title, String content, String parent, String imageUrl, String location, Date repeatDate, int repeatDay, int dueDay, int dueMonth, int dueYear, int priority, boolean done, List<Comment> comments) {
+        this(title, content, parent);
+        this.duration = duration;
+        this.projectContent = new Task(title, content, parent, imageUrl, location, repeatDate, repeatDay, dueDay, dueMonth, dueYear, priority, done, comments);
+    }
+
+    public long getDuration() {
         return duration;
     }
 
-    public void setDuration(Long duration) {
+    public void setDuration(long duration) {
         this.duration = duration;
     }
 

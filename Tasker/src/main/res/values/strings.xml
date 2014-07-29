@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <string name="app_name">Tasker</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world1!</string>
@@ -13,7 +14,34 @@
     <string name="action_websearch">Web search</string>
     <string name="text_new_item">Add task</string>
 
-    <!-- Main categories-->
+    <!--
+    Task detail key values
+    private String title;
+    private String content;
+    private String category;
+    private String imageUrl;
+    private String location;
+    private Date repeatDate;
+    private int repeatDay;
+    private int dueDay;
+    private int dueMonth;
+    private int dueYear;
+    private int priority;
+    private boolean done;
+    private List<Comment> comments
+    -->
+    <string name="task_title">Title:</string>
+    <string name="task_content">Content:</string>
+    <string name="task_category">Cat:</string>
+    <string name="task_location">Location:</string>
+    <string name="task_image">Images:</string>
+    <string name="task_repeat">Repeat:</string>
+    <string name="task_due_date">Due Date:</string>
+    <string name="task_priority">Prio:</string>
+    <string name="task_comments">Comments:</string>
+    <string name="task_sub_tasks">Sub tasks:</string>
+
+    <!-- Main categories -->
     <string-array name="tabs_items">
         <item>Tasks</item>
         <item>Lists</item>
@@ -38,4 +66,13 @@
     </string-array>
 
     <!-- Create the main SQL Strings. -->
+    <string name="title_activity_task_details">TaskDetailsActivity</string>
+    <string name="title_activity_task_detailed">TaskDetailedActivity</string>
+    <string name="title_section1">Section 1</string>
+    <string name="title_section2">Section 2</string>
+    <string name="title_section3">Section 3</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="action_example">Example action</string>
+
 </resources>

@@ -6,7 +6,7 @@
 
     <uses-sdk
         android:minSdkVersion="10"
-        android:targetSdkVersion="19"/>
+        android:targetSdkVersion="19" />
 
     <application
         android:allowBackup="true"
@@ -16,25 +16,34 @@
 
         <!-- Main activity with Navigation drawer -->
         <activity
-            android:name="com.example.tasker.MainActivity"
+            android:name=".MainActivity"
             android:label="@string/app_name"
-            android:theme="@style/Theme.AppCompat">
+            android:theme="@style/Theme.AppCompat" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.myfirstapp.MainActivity" />
+                android:value="com.example.tasker.MainActivity" />
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
         <!-- ActionBar activity -->
         <activity
-            android:name="com.example.tasker.ActionBarUsage"
+            android:name=".ActionBarUsage"
             android:label="@string/app_name"
-            android:theme="@style/Theme.AppCompat">
+            android:theme="@style/Theme.AppCompat" >
         </activity>
-
+        <activity
+            android:name=".activities.TaskDetailedActivity"
+            android:label="@string/title_activity_task_detailed"
+            android:parentActivityName=".MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.tasker.MainActivity" />
+        </activity>
     </application>
 
 </manifest>

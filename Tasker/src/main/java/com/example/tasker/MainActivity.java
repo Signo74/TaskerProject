@@ -22,6 +22,7 @@ import android.widget.ExpandableListView;
 import android.widget.ExpandableListView.OnGroupClickListener;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.tasker.controller.dao.TasksDAO;
 import com.example.tasker.model.ExpandableListGroup;
@@ -180,11 +181,16 @@ public class MainActivity
      */
     private void selectItem(int position) {
         expandableListView.setOnGroupClickListener(new OnGroupClickListener() {
-
             @Override
-            public boolean onGroupClick(ExpandableListView parent, View v,
-                                        int groupPosition, long id) {
+            public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
                 return false;
+            }
+        });
+
+        expandableListView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(MainActivity.this, "clicked", Toast.LENGTH_SHORT).show();
             }
         });
         //TODO: implement proper swapping of fragments for main View.

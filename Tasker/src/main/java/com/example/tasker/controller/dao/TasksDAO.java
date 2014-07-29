@@ -12,6 +12,7 @@ import com.example.tasker.controller.dbhelper.TasksDBHelper;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.ListIterator;
@@ -35,7 +36,7 @@ public class TasksDAO {
         dbHelper.close();
     }
 
-    public Task insertTask(int type, String title, String content, String parent, String image, String location, Date repeatDate, int repeatDays, Date dueDate, int priority, boolean done, List<Comment> comments) {
+    public Task insertTask(int type, String title, String content, String parent, String image, String location, Date repeatDate, int repeatDays, Calendar dueDate, int priority, boolean done, List<Comment> comments) {
         ContentValues values = new ContentValues();
         values.put(dbHelper.TITLE_COLUMN, title);
         values.put(dbHelper.TYPE_COLUMN, type);
@@ -43,7 +44,9 @@ public class TasksDAO {
         values.put(dbHelper.PARENT_COLUMN, parent);
         values.put(dbHelper.IMAGE_COLUMN, image);
         values.put(dbHelper.LOCATION_COLUMN, location);
-        values.put(dbHelper.DUE_DATE_COLUMN, dueDate.getTime());
+        values.put(dbHelper.DUE_DAY_COLUMN, dueDate.DAY_OF_MONTH);
+        values.put(dbHelper.DUE_MONTH_COLUMN, dueDate.MONTH);
+        values.put(dbHelper.DUE_YEAR_COLUMN, dueDate.YEAR);
         if (repeatDate != null) {
             values.put(dbHelper.REPEAT_DATE_COLUMN, repeatDate.getTime());
         } else {
@@ -82,10 +85,12 @@ public class TasksDAO {
         values.put(dbHelper.TITLE_COLUMN, task.getTitle());
         values.put(dbHelper.TYPE_COLUMN, task.getType());
         values.put(dbHelper.DESCRIPTION_COLUMN, task.getContent());
-        values.put(dbHelper.IMAGE_COLUMN, task.getImage());
+        values.put(dbHelper.IMAGE_COLUMN, task.getImageUrl());
         values.put(dbHelper.LOCATION_COLUMN, task.getLocation());
         values.put(dbHelper.PARENT_COLUMN, task.getCategory());
-        values.put(dbHelper.DUE_DATE_COLUMN, task.getDueDate().getTime());
+        values.put(dbHelper.DUE_DAY_COLUMN, task.getDueDay());
+        values.put(dbHelper.DUE_MONTH_COLUMN, task.getDueMonth());
+        values.put(dbHelper.DUE_YEAR_COLUMN, task.getDueYear());
         values.put(dbHelper.REPEAT_DATE_COLUMN, task.getRepeatDate().getTime());
         values.put(dbHelper.REPEAT_DAYS_COLUMN, task.getRepeatDay());
         values.put(dbHelper.PRIORITY_COLUMN, task.getPriority());
@@ -114,10 +119,12 @@ public class TasksDAO {
                 ContentValues values = new ContentValues();
                 values.put(dbHelper.TITLE_COLUMN, task.getTitle());
                 values.put(dbHelper.TYPE_COLUMN, task.getType());
-                values.put(dbHelper.IMAGE_COLUMN, task.getImage());
+                values.put(dbHelper.IMAGE_COLUMN, task.getImageUrl());
                 values.put(dbHelper.LOCATION_COLUMN, task.getLocation());
                 values.put(dbHelper.PARENT_COLUMN, task.getCategory());
-                values.put(dbHelper.DUE_DATE_COLUMN, task.getDueDate().getTime());
+                values.put(dbHelper.DUE_DAY_COLUMN, task.getDueDay());
+                values.put(dbHelper.DUE_MONTH_COLUMN, task.getDueMonth());
+                values.put(dbHelper.DUE_YEAR_COLUMN, task.getDueYear());
                 values.put(dbHelper.REPEAT_DATE_COLUMN, task.getRepeatDate().getTime());
                 values.put(dbHelper.REPEAT_DAYS_COLUMN, task.getRepeatDay());
                 values.put(dbHelper.PRIORITY_COLUMN, task.getPriority());
@@ -219,18 +226,20 @@ public class TasksDAO {
             String parent = cursor.getString(4);
             String image = cursor.getString(5);
             String location = cursor.getString(6);
-            Date dueDate = new Date(cursor.getLong(7));
-            Date repeatDate = new Date(cursor.getLong(8));
-            Integer repeatDays = cursor.getInt(9);;
+            int dueDay = cursor.getInt(7);
+            int dueMonth = cursor.getInt(8);
+            int dueYear = cursor.getInt(9);
+            Date repeatDate = new Date(cursor.getLong(10));
+            Integer repeatDays = cursor.getInt(11);;
             Boolean done = false;
-            if (cursor.getInt(10) == 1) {
+            if (cursor.getInt(12) == 1) {
                 done = true;
             }
-            Integer priority = cursor.getInt(11);
+            Integer priority = cursor.getInt(13);
 
             List<Comment> comments = new ArrayList<Comment>();
             if (cursor.getString(12).indexOf("Comment") > -1) {
-                String[] tempComments = cursor.getString(12).split("Comment");
+                String[] tempComments = cursor.getString(14).split("Comment");
                 for (String comment : tempComments) {
                     comment = comment.replace("{", "");
                     comment = comment.replace("}", "");
@@ -246,7 +255,7 @@ public class TasksDAO {
                 }
             }
 
-            Task newTask = new Task(title, content, parent, image, location, repeatDate, repeatDays, dueDate, priority, done, comments);
+            Task newTask = new Task(title, content, parent, image, location, repeatDate, repeatDays, dueDay, dueMonth, dueYear, priority, done, comments);
             newTask.setId(Long.valueOf(cursor.getPosition()));
 
             Log.d("TasksDAO.cursorToTask","Creating new task with id " + newTask.getId() + ". Task: " + newTask);

@@ -3,6 +3,7 @@ package com.example.tasker.model;
 import com.example.tasker.model.base.Entry;
 import com.example.tasker.model.base.EntryTypes;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -13,39 +14,64 @@ import java.util.List;
 public class Task
     extends Entry {
 
+    private static Calendar calendar = Calendar.getInstance();
+
     private String imageUrl;
     private String location;
     private Date repeatDate;
-    private Integer repeatDay;
-    private Date dueDate;
-    private Integer priority;
+    private int repeatDay;
+    private int dueDay;
+    private int dueMonth;
+    private int dueYear;
+    private int priority;
     private boolean done;
     private List<Comment> comments;
-
 
     Task(String title, String content, String parent) {
         super(EntryTypes.TASK.getEntryId(), title, content, parent);
     }
 
-
-
-    public Task(String title, String content, String parent, String imageUrl, String location, Date repeatDate, Integer repeatDay, Date dueDate, Integer priority, boolean done, List<Comment> comments) {
+    public Task(String title, String content, String parent, String imageUrl, String location, Date repeatDate, int repeatDay, Calendar dueDate, int priority, boolean done, List<Comment> comments) {
         this(title, content, parent);
         this.imageUrl = imageUrl;
         this.location = location;
         this.repeatDate = repeatDate;
         this.repeatDay = repeatDay;
-        this.dueDate = dueDate;
+        this.dueDay = dueDate.DAY_OF_MONTH;
+        this.dueMonth = dueDate.MONTH;
+        this.dueYear = dueDate.YEAR;
         this.priority = priority;
         this.done = done;
         this.comments = comments;
     }
 
-    public String getImage() {
+    public Task(String title, String content, String parent, String imageUrl, String location, Date repeatDate, int repeatDay, int dueDay, int dueMonth, int dueYear, int priority, boolean done, List<Comment> comments) {
+        this(title, content, parent);
+        this.imageUrl = imageUrl;
+        this.location = location;
+        this.repeatDate = repeatDate;
+        this.repeatDay = repeatDay;
+        this.dueDay = dueDay;
+        this.dueMonth = dueMonth;
+        this.dueYear = dueYear;
+        this.priority = priority;
+        this.done = done;
+        this.comments = comments;
+    }
+
+    public static Calendar getCalendar() {
+        return calendar;
+    }
+
+    public static void setCalendar(Calendar calendar) {
+        Task.calendar = calendar;
+    }
+
+    public String getImageUrl() {
         return imageUrl;
     }
 
-    public void setImage(String imageUrl) {
+    public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
     }
 
@@ -65,27 +91,43 @@ public class Task
         this.repeatDate = repeatDate;
     }
 
-    public Integer getRepeatDay() {
+    public int getRepeatDay() {
         return repeatDay;
     }
 
-    public void setRepeatDay(Integer repeatDay) {
+    public void setRepeatDay(int repeatDay) {
         this.repeatDay = repeatDay;
     }
 
-    public Date getDueDate() {
-        return dueDate;
+    public int getDueDay() {
+        return dueDay;
     }
 
-    public void setDueDate(Date dueDate) {
-        this.dueDate = dueDate;
+    public void setDueDay(int dueDay) {
+        this.dueDay = dueDay;
     }
 
-    public Integer getPriority() {
+    public int getDueMonth() {
+        return dueMonth;
+    }
+
+    public void setDueMonth(int dueMonth) {
+        this.dueMonth = dueMonth;
+    }
+
+    public int getDueYear() {
+        return dueYear;
+    }
+
+    public void setDueYear(int dueYear) {
+        this.dueYear = dueYear;
+    }
+
+    public int getPriority() {
         return priority;
     }
 
-    public void setPriority(Integer priority) {
+    public void setPriority(int priority) {
         this.priority = priority;
     }
 
@@ -108,15 +150,17 @@ public class Task
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("Task{");
-        sb.append("image=").append(imageUrl);
+        sb.append(super.toString());
+        sb.append("imageUrl='").append(imageUrl).append('\'');
         sb.append(", location='").append(location).append('\'');
         sb.append(", repeatDate=").append(repeatDate);
         sb.append(", repeatDay=").append(repeatDay);
-        sb.append(", dueDate=").append(dueDate);
+        sb.append(", dueDay=").append(dueDay);
+        sb.append(", dueMonth=").append(dueMonth);
+        sb.append(", dueYear=").append(dueYear);
         sb.append(", priority=").append(priority);
         sb.append(", done=").append(done);
         sb.append(", comments=").append(comments);
-        sb.append(super.toString());
         sb.append('}');
         return sb.toString();
     }

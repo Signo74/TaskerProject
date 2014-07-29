@@ -19,7 +19,9 @@ public class TasksDBHelper extends SQLiteOpenHelper {
     public static final String PARENT_COLUMN = "parent";
     public static final String IMAGE_COLUMN = "image";
     public static final String LOCATION_COLUMN = "location";
-    public static final String DUE_DATE_COLUMN = "duedate";
+    public static final String DUE_DAY_COLUMN = "dueday";
+    public static final String DUE_MONTH_COLUMN = "duemonth";
+    public static final String DUE_YEAR_COLUMN = "dueyear";
     public static final String REPEAT_DATE_COLUMN = "repeatdate";
     public static final String REPEAT_DAYS_COLUMN = "repeatdays";
     public static final String DONE_COLUMN = "done";
@@ -37,7 +39,9 @@ public class TasksDBHelper extends SQLiteOpenHelper {
             + PARENT_COLUMN + " text, "
             + IMAGE_COLUMN + " text, "
             + LOCATION_COLUMN + " text, "
-            + DUE_DATE_COLUMN + " text, "
+            + DUE_DAY_COLUMN + " text, "
+            + DUE_MONTH_COLUMN + " text, "
+            + DUE_YEAR_COLUMN + " text, "
             + REPEAT_DATE_COLUMN + " text, "
             + REPEAT_DAYS_COLUMN + " text, "
             + DONE_COLUMN + " integer, "

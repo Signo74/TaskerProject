@@ -55,13 +55,6 @@ public class ExpandableListAdapter
 
         text = (TextView) convertView.findViewById(R.id.lblListItem);
         text.setText(children);
-        convertView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(activity, children,
-                        Toast.LENGTH_SHORT).show();
-            }
-        });
         return convertView;
     }
 
