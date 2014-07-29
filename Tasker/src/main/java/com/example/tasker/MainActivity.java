@@ -187,10 +187,13 @@ public class MainActivity
             }
         });
 
-        expandableListView.setOnClickListener(new View.OnClickListener() {
+        expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+
             @Override
-            public void onClick(View v) {
+            public boolean onChildClick(ExpandableListView parent, View v,
+                                        int groupPosition, int childPosition, long id) {
                 Toast.makeText(MainActivity.this, "clicked", Toast.LENGTH_SHORT).show();
+                return false;
             }
         });
         //TODO: implement proper swapping of fragments for main View.
