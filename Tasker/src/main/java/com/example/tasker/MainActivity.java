@@ -188,10 +188,8 @@ public class MainActivity
         });
 
         expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
-
             @Override
-            public boolean onChildClick(ExpandableListView parent, View v,
-                                        int groupPosition, int childPosition, long id) {
+            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
                 Toast.makeText(MainActivity.this, "clicked", Toast.LENGTH_SHORT).show();
                 return false;
             }
