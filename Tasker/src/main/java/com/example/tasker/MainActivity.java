@@ -1,6 +1,7 @@
 package com.example.tasker;
 
 import android.annotation.TargetApi;
+import android.app.ActionBar;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.support.v4.app.FragmentActivity;
@@ -89,8 +90,8 @@ public class MainActivity
         getActionBar().setHomeButtonEnabled(true);
         //Main list view
         populateListView();
-        expandableListAdapter = new ExpandableListAdapter(this, groups);
-        expandableListView.setAdapter(expandableListAdapter);
+//        expandableListAdapter = new ExpandableListAdapter(this, groups);
+//        expandableListView.setAdapter(expandableListAdapter);
 
         todayCalendar.setTime(new Date());
     }
@@ -119,26 +120,46 @@ public class MainActivity
         String title = getResources().getStringArray(R.array.tasksByDate)[3];
         Log.d("Main.populateListView", "List with child items" + childItemTitles);
 
-        //This is how you can get Day and Month.
+        //TODO: This is how you can get Day and Month.
         //if (taskCalendar.DAY_OF_MONTH == todayCalendar.DAY_OF_MONTH && taskCalendar.MONTH == todayCalendar.MONTH) {}
         for (Task task : childItemTitles) {
             Log.d("Main.populateListView", "Adding task:" + task.toString());
-            if (!searchGroups(title)) {
-                Log.d("Main.populateListView", "Adding group:" + title);
-                ExpandableListGroup group = new ExpandableListGroup(title);
-                group.setHeader(title);
-                group.getChildren().add(task.getTitle());
-                groups.append(groups.size(), group);
-            } else {
-                try {
-                    getListGroupByTitle(title).getChildren().add(task.getTitle());
-                } catch (Exception ex){
-                    Log.e("Main.populateListView", "Adding task failed because no such group exists: " + title);
-                }
-            }
+            checkGroupsAndAddTask(title, task);
         }
 
         Log.d("Main.populateListView", "The sparse array of groups " + groups);
+    }
+
+    public void addTask(View newItemButton){
+        String title = getResources().getStringArray(R.array.tasksByDate)[3];
+        Task task = utils.quickAddTask(tasksDAO, String.valueOf(editText.getText()));
+        if (task != null) {
+            Log.d("MainActivity.addTask", "Task: " + task + " added to DB.");
+            checkGroupsAndAddTask(title, task);
+        } else {
+            Toast.makeText(this, "Error adding task to list.", Toast.LENGTH_SHORT);
+            //TODO: show alert for insert exception!
+        }
+
+    }
+
+    private void checkGroupsAndAddTask(String title, Task task) {
+        if (!searchGroups(title)) {
+            Log.d("Main.populateListView", "Adding group:" + title);
+            ExpandableListGroup group = new ExpandableListGroup(title);
+            group.setHeader(title);
+            group.getChildren().add(task.getTitle());
+            groups.append(groups.size(), group);
+        } else {
+            try {
+                getListGroupByTitle(title).getChildren().add(task.getTitle());
+            } catch (Exception ex){
+                Log.e("Main.populateListView", "Adding task failed because no such group exists: " + title);
+            }
+        }
+
+        expandableListAdapter = new ExpandableListAdapter(this, groups);
+        expandableListView.setAdapter(expandableListAdapter);
     }
 
     @Override
@@ -180,17 +201,16 @@ public class MainActivity
      * Swaps fragments in the main content view
      */
     private void selectItem(int position) {
-        expandableListView.setOnGroupClickListener(new OnGroupClickListener() {
-            @Override
-            public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
-                return false;
-            }
-        });
-
         expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-                Toast.makeText(MainActivity.this, "clicked", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "clicked!", Toast.LENGTH_SHORT).show();
+                return false;
+            }
+        });
+        expandableListView.setOnGroupClickListener(new OnGroupClickListener() {
+            @Override
+            public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
                 return false;
             }
         });
@@ -204,16 +224,11 @@ public class MainActivity
         getActionBar().setTitle(this.title);
     }
 
-    public void addTask(View newItemButton){
-        utils.quickAddTask(tasksDAO, String.valueOf(editText.getText()));
-    }
-
     public void deleteTask(View newItemButton){
         utils.deleteAllTasks(tasksDAO);
     }
 
-    public void getAllTasks(View newItem
-    ){
+    public void getAllTasks(View newItem){
         List<Task> childItemTitles = utils.getAllTasks(tasksDAO);
     }
 

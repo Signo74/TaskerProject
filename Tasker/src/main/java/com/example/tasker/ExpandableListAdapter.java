@@ -6,6 +6,7 @@ package com.example.tasker;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.util.Log;
 import android.util.SparseArray;
@@ -17,6 +18,7 @@ import android.widget.CheckedTextView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.tasker.activities.TaskDetailedActivity;
 import com.example.tasker.model.ExpandableListGroup;
 import com.example.tasker.model.Task;
 
@@ -46,7 +48,7 @@ public class ExpandableListAdapter
 
     public View getChildView(int groupPosition, final int childPosition, boolean isLastChild, View convertView, ViewGroup parent){
         final String children = (String) getChild(groupPosition, childPosition);
-        Log.d("[> Children String: ", children);
+        Log.d("[> Child String: ", children);
         TextView text = null;
 
         if (convertView == null) {

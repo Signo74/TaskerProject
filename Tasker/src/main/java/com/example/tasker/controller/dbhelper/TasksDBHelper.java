@@ -11,7 +11,7 @@ import java.util.Date;
 public class TasksDBHelper extends SQLiteOpenHelper {
     public static final String TABLE_NAME = "tasks";
     public static final String DATABASE_NAME = "tasksnew.db";
-    private static int DATABASE_VERSION = 1;
+    private static int DATABASE_VERSION = 2;
     public static final String ID_COLUMN = "_id";
     public static final String TITLE_COLUMN = "title";
     public static final String TYPE_COLUMN = "type";

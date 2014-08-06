@@ -28,10 +28,10 @@ public class TaskerUtils {
     public void TaskerUtils() {
     }
 
-    public void quickAddTask(TasksDAO dao, String title){
+    public Task quickAddTask(TasksDAO dao, String title){
         Log.d("TaskerUtils.quickAddTask","Adding task with title: " + title);
-        Date currentDate = new Date();
         Task task = dao.insertTask(EntryTypes.TASK.getEntryId(), title, "", "Today", "", "",  null, 7, dueDateCalendar, 0, false, null);
+        return task;
     }
 
     public void deleteAllTasks(TasksDAO dao){

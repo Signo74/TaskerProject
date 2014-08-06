@@ -61,9 +61,9 @@ public class TasksDAO {
             values.put(dbHelper.COMMENTS_COLUMN, "");
         }
         Log.d("TasksDAO.insertTask", "These values " + String.valueOf(values.valueSet()) + " will be inserted in the new entry.");
-        database.beginTransaction();
 
         try {
+            database.beginTransaction();
             long insertID = database.insert(dbHelper.TABLE_NAME, null, values);
             Cursor cursor = database.query(dbHelper.TABLE_NAME, null, dbHelper.ID_COLUMN + " = " + insertID, null, null, null, null);
             cursor.moveToFirst();
@@ -74,6 +74,9 @@ public class TasksDAO {
             newTask.setId(insertID);
 
             return newTask;
+        } catch (Exception ex) {
+            Log.e("TasksDAO.insertTask", "Error: " + ex + " was thrown while inserting task in DB.");
+            return null;
         } finally {
             database.endTransaction();
         }
